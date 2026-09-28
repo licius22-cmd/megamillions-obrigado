@@ -1,0 +1,68 @@
+[
+  {
+    "slug": "starter",
+    "path": "/starter",
+    "tickets": 100,
+    "usd": 19,
+    "first": {
+      "n": 1,
+      "whites": "09-10-55-57-67",
+      "mega": "20"
+    }
+  },
+  {
+    "slug": "basic",
+    "path": "/basic",
+    "tickets": 250,
+    "usd": 34,
+    "first": {
+      "n": 1,
+      "whites": "01-07-08-15-33",
+      "mega": "17"
+    }
+  },
+  {
+    "slug": "plus",
+    "path": "/plus",
+    "tickets": 500,
+    "usd": 54,
+    "first": {
+      "n": 1,
+      "whites": "19-30-40-48-50",
+      "mega": "13"
+    }
+  },
+  {
+    "slug": "pro",
+    "path": "/pro",
+    "tickets": 1000,
+    "usd": 89,
+    "first": {
+      "n": 1,
+      "whites": "06-37-49-54-58",
+      "mega": "14"
+    }
+  },
+  {
+    "slug": "business",
+    "path": "/business",
+    "tickets": 2500,
+    "usd": 179,
+    "first": {
+      "n": 1,
+      "whites": "01-46-54-62-63",
+      "mega": "12"
+    }
+  },
+  {
+    "slug": "agency",
+    "path": "/agency",
+    "tickets": 5000,
+    "usd": 299,
+    "first": {
+      "n": 1,
+      "whites": "03-16-43-59-63",
+      "mega": "23"
+    }
+  }
+]

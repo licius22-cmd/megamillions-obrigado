@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Starter · 100 boards · Mega Hub</title>
+<style>
+:root{--cream:#F4EFE6;--ink:#1C1915;--sage:#3D5348;--muted:#6B655C;--line:#E3D9C8}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--cream);color:var(--ink);font-family:Georgia,serif}
+.wrap{max-width:920px;margin:0 auto;padding:32px 20px 64px}
+.kicker{letter-spacing:.16em;text-transform:uppercase;font-size:11px;color:var(--sage);margin:0 0 8px}
+h1{font-size:28px;margin:0 0 8px}
+.meta{color:var(--muted);margin:0 0 20px;line-height:1.5}
+.bar{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 22px}
+a.btn{display:inline-block;background:var(--ink);color:var(--cream);text-decoration:none;padding:10px 14px;font-size:14px}
+a.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--ink)}
+.note{font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px;margin-top:8px}
+table{width:100%;border-collapse:collapse;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px}
+th{text-align:left;font-size:11px;letter-spacing:.08em;color:var(--muted);padding:6px 8px;border-bottom:1px solid var(--line)}
+td{padding:5px 8px;border-bottom:1px solid #efe6d8}
+td.n{width:54px;color:var(--muted)}
+td.mega{width:52px;font-weight:700}
+tr.pick{cursor:pointer}
+tr.pick:hover{background:#efe6d8}
+.home-card{border:1px solid var(--line);padding:18px;margin:18px 0 0;max-width:520px}
+.modal{display:none;position:fixed;inset:0;background:rgba(28,25,21,.72);z-index:40;padding:16px;overflow:auto}
+.modal.open{display:flex;align-items:center;justify-content:center}
+.slip{position:relative;width:min(420px,94vw);background:#fff;box-shadow:0 16px 50px rgba(0,0,0,.28)}
+.slip img{display:block;width:100%;height:auto}
+.slip .nums{position:absolute;left:9%;right:9%;top:47.2%;height:8.6%;display:flex;align-items:center;justify-content:space-between;font-family:Arial,Helvetica,sans-serif;font-weight:800;color:#111;letter-spacing:.02em}
+.slip .nums span{font-size:clamp(18px,6.4vw,28px)}
+.slip .nums .qp{letter-spacing:0}
+.modal .x{position:absolute;top:10px;right:14px;border:0;background:transparent;color:#fff;font-size:28px;cursor:pointer}
+.notice{background:#fff;border:1px solid var(--line);padding:18px 18px 16px;margin:0 0 22px}
+.notice .who{margin:0 0 10px;font-size:18px}
+.notice .draw{margin:0 0 10px;font-size:16px}
+.notice .draw strong{font-weight:700}
+.notice .keep{margin:0;color:var(--muted);font-size:14px;line-height:1.55}
+.thanks{max-width:520px}
+.field{margin:18px 0 12px}
+.field label{display:block;font-size:13px;margin:0 0 6px;color:var(--muted)}
+.field input{width:100%;padding:12px 12px;font-size:16px;border:1px solid var(--line);background:#fff;color:var(--ink);font-family:Georgia,serif}
+.field input:focus{outline:2px solid var(--sage);border-color:var(--sage)}
+button.go{display:inline-block;background:var(--ink);color:var(--cream);border:0;padding:12px 16px;font-size:15px;cursor:pointer;font-family:Georgia,serif}
+.err{display:none;color:#8a2b2b;font-size:13px;margin:0 0 12px}
+.err.show{display:block}
+.logo{display:block;width:min(280px,70vw);height:auto;margin:0 0 18px}
+.thanks-card{background:#fff;border:1px solid var(--line);padding:28px 24px 26px;max-width:460px}
+.emailbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;background:#fff;border:1px solid var(--line);padding:10px;margin:0 0 18px}
+.emailbar input{flex:1;min-width:180px;padding:10px 12px;font-size:15px;border:1px solid var(--line);background:var(--cream);color:var(--ink);font-family:Georgia,serif}
+.emailbar button{background:var(--ink);color:var(--cream);border:0;padding:10px 14px;font-size:14px;cursor:pointer;font-family:Georgia,serif}
+.boards{display:none}
+.boards.show{display:block}
+</style>
+</head>
+<body>
+<main class="wrap">
+<img class="logo" src="/assets/logo.jpg" alt="Mega Millions"/>
+<p class="kicker">Mega Hub · purchase confirmed</p>
+<h1>100 boards ready</h1>
+<section class="notice">
+  <p class="who">You are customer <strong>#326</strong>.</p>
+  <p class="draw">The next Mega Millions drawing is <strong id="draw-date">loading drawing date…</strong>.</p>
+  <p class="keep">Please save this page and keep the link until the drawing. Your Whop purchase is already on file here. This is the record of your boards.</p>
+</section>
+<form class="emailbar" id="reveal-form">
+  <input id="page-email" name="email" type="email" autocomplete="email" required placeholder="Confirm your email"/>
+  <button type="submit">Click here to view tickets</button>
+</form>
+<div class="boards" id="boards">
+<table>
+<thead><tr><th>#</th><th>Whites 1–70</th><th>Mega</th></tr></thead>
+<tbody>
+<tr class='pick' data-line="09 10 55 57 67 20QP"><td class='n'>1</td><td>09-10-55-57-67</td><td class='mega'>20</td></tr>
+<tr class='pick' data-line="04 10 11 55 65 01QP"><td class='n'>2</td><td>04-10-11-55-65</td><td class='mega'>01</td></tr>
+<tr class='pick' data-line="18 26 35 43 49 14QP"><td class='n'>3</td><td>18-26-35-43-49</td><td class='mega'>14</td></tr>
+<tr class='pick' data-line="05 27 38 55 66 21QP"><td class='n'>4</td><td>05-27-38-55-66</td><td class='mega'>21</td></tr>
+<tr class='pick' data-line="05 07 34 42 50 19QP"><td class='n'>5</td><td>05-07-34-42-50</td><td class='mega'>19</td></tr>
+<tr class='pick' data-line="02 22 32 42 55 10QP"><td class='n'>6</td><td>02-22-32-42-55</td><td class='mega'>10</td></tr>
+<tr class='pick' data-line="23 24 43 59 68 13QP"><td class='n'>7</td><td>23-24-43-59-68</td><td class='mega'>13</td></tr>
+<tr class='pick' data-line="11 28 40 53 58 22QP"><td class='n'>8</td><td>11-28-40-53-58</td><td class='mega'>22</td></tr>
+<tr class='pick' data-line="18 24 38 54 55 18QP"><td class='n'>9</td><td>18-24-38-54-55</td><td class='mega'>18</td></tr>
+<tr class='pick' data-line="15 21 30 60 62 24QP"><td class='n'>10</td><td>15-21-30-60-62</td><td class='mega'>24</td></tr>
+<tr class='pick' data-line="04 32 38 42 50 05QP"><td class='n'>11</td><td>04-32-38-42-50</td><td class='mega'>05</td></tr>
+<tr class='pick' data-line="21 34 41 56 61 04QP"><td class='n'>12</td><td>21-34-41-56-61</td><td class='mega'>04</td></tr>
+<tr class='pick' data-line="06 27 43 48 49 22QP"><td class='n'>13</td><td>06-27-43-48-49</td><td class='mega'>22</td></tr>
+<tr class='pick' data-line="31 38 44 55 65 18QP"><td class='n'>14</td><td>31-38-44-55-65</td><td class='mega'>18</td></tr>
+<tr class='pick' data-line="01 29 53 61 63 04QP"><td class='n'>15</td><td>01-29-53-61-63</td><td class='mega'>04</td></tr>
+<tr class='pick' data-line="05 37 46 53 65 24QP"><td class='n'>16</td><td>05-37-46-53-65</td><td class='mega'>24</td></tr>
+<tr class='pick' data-line="04 10 30 41 54 15QP"><td class='n'>17</td><td>04-10-30-41-54</td><td class='mega'>15</td></tr>
+<tr class='pick' data-line="10 45 51 62 70 22QP"><td class='n'>18</td><td>10-45-51-62-70</td><td class='mega'>22</td></tr>
+<tr class='pick' data-line="13 21 28 51 67 19QP"><td class='n'>19</td><td>13-21-28-51-67</td><td class='mega'>19</td></tr>
+<tr class='pick' data-line="18 25 47 59 61 03QP"><td class='n'>20</td><td>18-25-47-59-61</td><td class='mega'>03</td></tr>
+<tr class='pick' data-line="16 38 41 52 67 11QP"><td class='n'>21</td><td>16-38-41-52-67</td><td class='mega'>11</td></tr>
+<tr class='pick' data-line="22 35 61 63 70 21QP"><td class='n'>22</td><td>22-35-61-63-70</td><td class='mega'>21</td></tr>
+<tr class='pick' data-line="16 27 32 48 51 15QP"><td class='n'>23</td><td>16-27-32-48-51</td><td class='mega'>15</td></tr>
+<tr class='pick' data-line="16 37 66 67 69 12QP"><td class='n'>24</td><td>16-37-66-67-69</td><td class='mega'>12</td></tr>
+<tr class='pick' data-line="04 16 28 30 66 12QP"><td class='n'>25</td><td>04-16-28-30-66</td><td class='mega'>12</td></tr>
+<tr class='pick' data-line="01 11 19 22 30 13QP"><td class='n'>26</td><td>01-11-19-22-30</td><td class='mega'>13</td></tr>
+<tr class='pick' data-line="16 27 38 54 65 16QP"><td class='n'>27</td><td>16-27-38-54-65</td><td class='mega'>16</td></tr>
+<tr class='pick' data-line="01 32 43 50 70 08QP"><td class='n'>28</td><td>01-32-43-50-70</td><td class='mega'>08</td></tr>
+<tr class='pick' data-line="14 19 21 57 66 06QP"><td class='n'>29</td><td>14-19-21-57-66</td><td class='mega'>06</td></tr>
+<tr class='pick' data-line="02 08 21 23 65 09QP"><td class='n'>30</td><td>02-08-21-23-65</td><td class='mega'>09</td></tr>
+<tr class='pick' data-line="16 38 45 50 52 23QP"><td class='n'>31</td><td>16-38-45-50-52</td><td class='mega'>23</td></tr>
+<tr class='pick' data-line="04 25 41 64 68 09QP"><td class='n'>32</td><td>04-25-41-64-68</td><td class='mega'>09</td></tr>
+<tr class='pick' data-line="03 30 37 44 63 14QP"><td class='n'>33</td><td>03-30-37-44-63</td><td class='mega'>14</td></tr>
+<tr class='pick' data-line="02 04 26 27 35 12QP"><td class='n'>34</td><td>02-04-26-27-35</td><td class='mega'>12</td></tr>
+<tr class='pick' data-line="05 07 22 57 65 18QP"><td class='n'>35</td><td>05-07-22-57-65</td><td class='mega'>18</td></tr>
+<tr class='pick' data-line="18 24 61 62 63 19QP"><td class='n'>36</td><td>18-24-61-62-63</td><td class='mega'>19</td></tr>
+<tr class='pick' data-line="04 13 54 56 67 21QP"><td class='n'>37</td><td>04-13-54-56-67</td><td class='mega'>21</td></tr>
+<tr class='pick' data-line="09 19 49 50 56 05QP"><td class='n'>38</td><td>09-19-49-50-56</td><td class='mega'>05</td></tr>
+<tr class='pick' data-line="18 26 31 53 55 23QP"><td class='n'>39</td><td>18-26-31-53-55</td><td class='mega'>23</td></tr>
+<tr class='pick' data-line="02 29 36 41 43 16QP"><td class='n'>40</td><td>02-29-36-41-43</td><td class='mega'>16</td></tr>
+<tr class='pick' data-line="07 12 24 40 47 03QP"><td class='n'>41</td><td>07-12-24-40-47</td><td class='mega'>03</td></tr>
+<tr class='pick' data-line="24 34 50 58 59 19QP"><td class='n'>42</td><td>24-34-50-58-59</td><td class='mega'>19</td></tr>
+<tr class='pick' data-line="19 31 62 69 70 02QP"><td class='n'>43</td><td>19-31-62-69-70</td><td class='mega'>02</td></tr>
+<tr class='pick' data-line="10 12 23 35 40 23QP"><td class='n'>44</td><td>10-12-23-35-40</td><td class='mega'>23</td></tr>
+<tr class='pick' data-line="15 26 55 66 68 22QP"><td class='n'>45</td><td>15-26-55-66-68</td><td class='mega'>22</td></tr>
+<tr class='pick' data-line="04 17 28 35 42 14QP"><td class='n'>46</td><td>04-17-28-35-42</td><td class='mega'>14</td></tr>
+<tr class='pick' data-line="19 24 28 46 54 24QP"><td class='n'>47</td><td>19-24-28-46-54</td><td class='mega'>24</td></tr>
+<tr class='pick' data-line="13 28 29 43 50 01QP"><td class='n'>48</td><td>13-28-29-43-50</td><td class='mega'>01</td></tr>
+<tr class='pick' data-line="25 46 56 61 62 09QP"><td class='n'>49</td><td>25-46-56-61-62</td><td class='mega'>09</td></tr>
+<tr class='pick' data-line="13 26 39 49 61 19QP"><td class='n'>50</td><td>13-26-39-49-61</td><td class='mega'>19</td></tr>
+<tr class='pick' data-line="03 15 22 26 67 03QP"><td class='n'>51</td><td>03-15-22-26-67</td><td class='mega'>03</td></tr>
+<tr class='pick' data-line="08 21 27 31 67 06QP"><td class='n'>52</td><td>08-21-27-31-67</td><td class='mega'>06</td></tr>
+<tr class='pick' data-line="05 06 34 41 44 19QP"><td class='n'>53</td><td>05-06-34-41-44</td><td class='mega'>19</td></tr>
+<tr class='pick' data-line="10 30 35 47 61 12QP"><td class='n'>54</td><td>10-30-35-47-61</td><td class='mega'>12</td></tr>
+<tr class='pick' data-line="01 17 35 39 70 16QP"><td class='n'>55</td><td>01-17-35-39-70</td><td class='mega'>16</td></tr>
+<tr class='pick' data-line="13 26 27 29 63 22QP"><td class='n'>56</td><td>13-26-27-29-63</td><td class='mega'>22</td></tr>
+<tr class='pick' data-line="05 25 28 31 32 05QP"><td class='n'>57</td><td>05-25-28-31-32</td><td class='mega'>05</td></tr>
+<tr class='pick' data-line="08 10 42 60 66 07QP"><td class='n'>58</td><td>08-10-42-60-66</td><td class='mega'>07</td></tr>
+<tr class='pick' data-line="14 21 23 26 43 18QP"><td class='n'>59</td><td>14-21-23-26-43</td><td class='mega'>18</td></tr>
+<tr class='pick' data-line="17 32 37 52 70 04QP"><td class='n'>60</td><td>17-32-37-52-70</td><td class='mega'>04</td></tr>
+<tr class='pick' data-line="34 35 47 54 60 14QP"><td class='n'>61</td><td>34-35-47-54-60</td><td class='mega'>14</td></tr>
+<tr class='pick' data-line="10 12 14 43 64 07QP"><td class='n'>62</td><td>10-12-14-43-64</td><td class='mega'>07</td></tr>
+<tr class='pick' data-line="38 42 43 63 67 23QP"><td class='n'>63</td><td>38-42-43-63-67</td><td class='mega'>23</td></tr>
+<tr class='pick' data-line="27 56 64 67 68 24QP"><td class='n'>64</td><td>27-56-64-67-68</td><td class='mega'>24</td></tr>
+<tr class='pick' data-line="34 52 54 57 59 17QP"><td class='n'>65</td><td>34-52-54-57-59</td><td class='mega'>17</td></tr>
+<tr class='pick' data-line="06 12 24 57 67 10QP"><td class='n'>66</td><td>06-12-24-57-67</td><td class='mega'>10</td></tr>
+<tr class='pick' data-line="08 11 39 41 46 22QP"><td class='n'>67</td><td>08-11-39-41-46</td><td class='mega'>22</td></tr>
+<tr class='pick' data-line="18 24 34 38 60 06QP"><td class='n'>68</td><td>18-24-34-38-60</td><td class='mega'>06</td></tr>
+<tr class='pick' data-line="08 09 32 58 70 21QP"><td class='n'>69</td><td>08-09-32-58-70</td><td class='mega'>21</td></tr>
+<tr class='pick' data-line="17 42 49 56 68 12QP"><td class='n'>70</td><td>17-42-49-56-68</td><td class='mega'>12</td></tr>
+<tr class='pick' data-line="02 04 29 41 61 01QP"><td class='n'>71</td><td>02-04-29-41-61</td><td class='mega'>01</td></tr>
+<tr class='pick' data-line="13 29 46 47 51 05QP"><td class='n'>72</td><td>13-29-46-47-51</td><td class='mega'>05</td></tr>
+<tr class='pick' data-line="06 14 21 30 43 22QP"><td class='n'>73</td><td>06-14-21-30-43</td><td class='mega'>22</td></tr>
+<tr class='pick' data-line="22 35 44 61 70 10QP"><td class='n'>74</td><td>22-35-44-61-70</td><td class='mega'>10</td></tr>
+<tr class='pick' data-line="22 35 36 45 64 16QP"><td class='n'>75</td><td>22-35-36-45-64</td><td class='mega'>16</td></tr>
+<tr class='pick' data-line="29 36 56 63 64 20QP"><td class='n'>76</td><td>29-36-56-63-64</td><td class='mega'>20</td></tr>
+<tr class='pick' data-line="07 19 50 54 62 12QP"><td class='n'>77</td><td>07-19-50-54-62</td><td class='mega'>12</td></tr>
+<tr class='pick' data-line="11 23 41 64 69 16QP"><td class='n'>78</td><td>11-23-41-64-69</td><td class='mega'>16</td></tr>
+<tr class='pick' data-line="06 08 17 36 67 11QP"><td class='n'>79</td><td>06-08-17-36-67</td><td class='mega'>11</td></tr>
+<tr class='pick' data-line="05 09 18 58 62 06QP"><td class='n'>80</td><td>05-09-18-58-62</td><td class='mega'>06</td></tr>
+<tr class='pick' data-line="13 17 21 36 66 11QP"><td class='n'>81</td><td>13-17-21-36-66</td><td class='mega'>11</td></tr>
+<tr class='pick' data-line="05 06 12 37 58 13QP"><td class='n'>82</td><td>05-06-12-37-58</td><td class='mega'>13</td></tr>
+<tr class='pick' data-line="04 06 28 47 63 01QP"><td class='n'>83</td><td>04-06-28-47-63</td><td class='mega'>01</td></tr>
+<tr class='pick' data-line="13 37 41 58 66 14QP"><td class='n'>84</td><td>13-37-41-58-66</td><td class='mega'>14</td></tr>
+<tr class='pick' data-line="11 13 52 58 69 02QP"><td class='n'>85</td><td>11-13-52-58-69</td><td class='mega'>02</td></tr>
+<tr class='pick' data-line="25 32 39 41 44 12QP"><td class='n'>86</td><td>25-32-39-41-44</td><td class='mega'>12</td></tr>
+<tr class='pick' data-line="09 13 23 46 64 16QP"><td class='n'>87</td><td>09-13-23-46-64</td><td class='mega'>16</td></tr>
+<tr class='pick' data-line="07 17 51 64 65 19QP"><td class='n'>88</td><td>07-17-51-64-65</td><td class='mega'>19</td></tr>
+<tr class='pick' data-line="19 20 21 49 68 24QP"><td class='n'>89</td><td>19-20-21-49-68</td><td class='mega'>24</td></tr>
+<tr class='pick' data-line="11 22 28 39 49 18QP"><td class='n'>90</td><td>11-22-28-39-49</td><td class='mega'>18</td></tr>
+<tr class='pick' data-line="15 29 38 52 70 15QP"><td class='n'>91</td><td>15-29-38-52-70</td><td class='mega'>15</td></tr>
+<tr class='pick' data-line="09 31 55 61 67 06QP"><td class='n'>92</td><td>09-31-55-61-67</td><td class='mega'>06</td></tr>
+<tr class='pick' data-line="06 35 37 66 70 02QP"><td class='n'>93</td><td>06-35-37-66-70</td><td class='mega'>02</td></tr>
+<tr class='pick' data-line="02 10 48 61 70 17QP"><td class='n'>94</td><td>02-10-48-61-70</td><td class='mega'>17</td></tr>
+<tr class='pick' data-line="01 05 11 15 19 21QP"><td class='n'>95</td><td>01-05-11-15-19</td><td class='mega'>21</td></tr>
+<tr class='pick' data-line="15 31 41 52 63 05QP"><td class='n'>96</td><td>15-31-41-52-63</td><td class='mega'>05</td></tr>
+<tr class='pick' data-line="01 21 29 35 60 07QP"><td class='n'>97</td><td>01-21-29-35-60</td><td class='mega'>07</td></tr>
+<tr class='pick' data-line="26 32 41 46 60 13QP"><td class='n'>98</td><td>26-32-41-46-60</td><td class='mega'>13</td></tr>
+<tr class='pick' data-line="01 29 39 45 59 13QP"><td class='n'>99</td><td>01-29-39-45-59</td><td class='mega'>13</td></tr>
+<tr class='pick' data-line="10 18 26 63 64 17QP"><td class='n'>100</td><td>10-18-26-63-64</td><td class='mega'>17</td></tr>
+</tbody>
+</table>
+</div>
+</main>
+<div class="modal" id="ticket-modal" hidden>
+  <button class="x" type="button" aria-label="Close">×</button>
+  <div class="slip">
+    <img src="/assets/ticket.jpg" alt="Mega Millions ticket"/>
+    <div class="nums" id="ticket-nums"></div>
+  </div>
+</div>
+<script>
+const modal = document.getElementById('ticket-modal');
+const nums = document.getElementById('ticket-nums');
+function closeTicket(){ modal.classList.remove('open'); modal.hidden = true; }
+document.querySelectorAll('tr.pick').forEach((row) => {
+  row.addEventListener('click', () => {
+    const parts = row.dataset.line.trim().split(/\s+/);
+    nums.innerHTML = parts.map((p,i) => `<span class="${i===parts.length-1?'qp':''}">${p}</span>`).join('');
+    modal.hidden = false;
+    modal.classList.add('open');
+  });
+});
+modal.addEventListener('click', (e) => { if (e.target === modal || e.target.classList.contains('x')) closeTicket(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeTicket(); });
+function etParts(date) {
+  const map = {};
+  for (const part of new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/New_York',
+    weekday: 'short',
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    hourCycle: 'h23'
+  }).formatToParts(date)) {
+    map[part.type] = part.value;
+  }
+  return map;
+}
+function nextMegaMillionsDraw(from) {
+  let t = new Date(from.getTime());
+  for (let i = 0; i < 24 * 10; i++) {
+    const p = etParts(t);
+    const drawDay = p.weekday === 'Tue' || p.weekday === 'Fri';
+    const hour = Number(p.hour);
+    if (drawDay && hour < 23) {
+      const labelDate = new Date(Date.UTC(Number(p.year), Number(p.month) - 1, Number(p.day), 16, 0, 0));
+      const pretty = new Intl.DateTimeFormat('en-US', {
+        weekday: 'long',
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
+        timeZone: 'UTC'
+      }).format(labelDate);
+      return pretty + ' at 11:00 p.m. ET';
+    }
+    t = new Date(t.getTime() + 60 * 60 * 1000);
+  }
+  return 'the next official Tuesday or Friday drawing';
+}
+const drawEl = document.getElementById('draw-date');
+if (drawEl) drawEl.textContent = nextMegaMillionsDraw(new Date());
+const pageEmail = document.getElementById('page-email');
+const boards = document.getElementById('boards');
+const params = new URLSearchParams(location.search);
+let incoming = params.get('email') || '';
+try { incoming = incoming || sessionStorage.getItem('mega-hub-email') || ''; } catch (e) {}
+if (incoming && pageEmail) pageEmail.value = incoming;
+document.getElementById('reveal-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const value = (pageEmail.value || '').trim();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+    pageEmail.focus();
+    return;
+  }
+  try { sessionStorage.setItem('mega-hub-email', value); } catch (e2) {}
+  boards.classList.add('show');
+  boards.scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
+</script>
+</body>
+</html>

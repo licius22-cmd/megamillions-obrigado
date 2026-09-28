@@ -1,0 +1,658 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Plus · 500 boards · Mega Hub</title>
+<style>
+:root{--cream:#F4EFE6;--ink:#1C1915;--sage:#3D5348;--muted:#6B655C;--line:#E3D9C8}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--cream);color:var(--ink);font-family:Georgia,serif}
+.wrap{max-width:920px;margin:0 auto;padding:32px 20px 64px}
+.kicker{letter-spacing:.16em;text-transform:uppercase;font-size:11px;color:var(--sage);margin:0 0 8px}
+h1{font-size:28px;margin:0 0 8px}
+.meta{color:var(--muted);margin:0 0 20px;line-height:1.5}
+.bar{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 22px}
+a.btn{display:inline-block;background:var(--ink);color:var(--cream);text-decoration:none;padding:10px 14px;font-size:14px}
+a.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--ink)}
+.note{font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px;margin-top:8px}
+table{width:100%;border-collapse:collapse;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px}
+th{text-align:left;font-size:11px;letter-spacing:.08em;color:var(--muted);padding:6px 8px;border-bottom:1px solid var(--line)}
+td{padding:5px 8px;border-bottom:1px solid #efe6d8}
+td.n{width:54px;color:var(--muted)}
+td.mega{width:52px;font-weight:700}
+tr.pick{cursor:pointer}
+tr.pick:hover{background:#efe6d8}
+.home-card{border:1px solid var(--line);padding:18px;margin:18px 0 0;max-width:520px}
+.modal{display:none;position:fixed;inset:0;background:rgba(28,25,21,.72);z-index:40;padding:16px;overflow:auto}
+.modal.open{display:flex;align-items:center;justify-content:center}
+.slip{position:relative;width:min(420px,94vw);background:#fff;box-shadow:0 16px 50px rgba(0,0,0,.28)}
+.slip img{display:block;width:100%;height:auto}
+.slip .nums{position:absolute;left:9%;right:9%;top:47.2%;height:8.6%;display:flex;align-items:center;justify-content:space-between;font-family:Arial,Helvetica,sans-serif;font-weight:800;color:#111;letter-spacing:.02em}
+.slip .nums span{font-size:clamp(18px,6.4vw,28px)}
+.slip .nums .qp{letter-spacing:0}
+.modal .x{position:absolute;top:10px;right:14px;border:0;background:transparent;color:#fff;font-size:28px;cursor:pointer}
+.notice{background:#fff;border:1px solid var(--line);padding:18px 18px 16px;margin:0 0 22px}
+.notice .who{margin:0 0 10px;font-size:18px}
+.notice .draw{margin:0 0 10px;font-size:16px}
+.notice .draw strong{font-weight:700}
+.notice .keep{margin:0;color:var(--muted);font-size:14px;line-height:1.55}
+.thanks{max-width:520px}
+.field{margin:18px 0 12px}
+.field label{display:block;font-size:13px;margin:0 0 6px;color:var(--muted)}
+.field input{width:100%;padding:12px 12px;font-size:16px;border:1px solid var(--line);background:#fff;color:var(--ink);font-family:Georgia,serif}
+.field input:focus{outline:2px solid var(--sage);border-color:var(--sage)}
+button.go{display:inline-block;background:var(--ink);color:var(--cream);border:0;padding:12px 16px;font-size:15px;cursor:pointer;font-family:Georgia,serif}
+.err{display:none;color:#8a2b2b;font-size:13px;margin:0 0 12px}
+.err.show{display:block}
+.logo{display:block;width:min(280px,70vw);height:auto;margin:0 0 18px}
+.thanks-card{background:#fff;border:1px solid var(--line);padding:28px 24px 26px;max-width:460px}
+.emailbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;background:#fff;border:1px solid var(--line);padding:10px;margin:0 0 18px}
+.emailbar input{flex:1;min-width:180px;padding:10px 12px;font-size:15px;border:1px solid var(--line);background:var(--cream);color:var(--ink);font-family:Georgia,serif}
+.emailbar button{background:var(--ink);color:var(--cream);border:0;padding:10px 14px;font-size:14px;cursor:pointer;font-family:Georgia,serif}
+.boards{display:none}
+.boards.show{display:block}
+</style>
+</head>
+<body>
+<main class="wrap">
+<img class="logo" src="/assets/logo.jpg" alt="Mega Millions"/>
+<p class="kicker">Mega Hub · purchase confirmed</p>
+<h1>500 boards ready</h1>
+<section class="notice">
+  <p class="who">You are customer <strong>#326</strong>.</p>
+  <p class="draw">The next Mega Millions drawing is <strong id="draw-date">loading drawing date…</strong>.</p>
+  <p class="keep">Please save this page and keep the link until the drawing. Your Whop purchase is already on file here. This is the record of your boards.</p>
+</section>
+<form class="emailbar" id="reveal-form">
+  <input id="page-email" name="email" type="email" autocomplete="email" required placeholder="Confirm your email"/>
+  <button type="submit">Click here to view tickets</button>
+</form>
+<div class="boards" id="boards">
+<table>
+<thead><tr><th>#</th><th>Whites 1–70</th><th>Mega</th></tr></thead>
+<tbody>
+<tr class='pick' data-line="19 30 40 48 50 13QP"><td class='n'>1</td><td>19-30-40-48-50</td><td class='mega'>13</td></tr>
+<tr class='pick' data-line="04 23 43 61 69 04QP"><td class='n'>2</td><td>04-23-43-61-69</td><td class='mega'>04</td></tr>
+<tr class='pick' data-line="08 35 42 52 55 18QP"><td class='n'>3</td><td>08-35-42-52-55</td><td class='mega'>18</td></tr>
+<tr class='pick' data-line="19 31 53 61 64 12QP"><td class='n'>4</td><td>19-31-53-61-64</td><td class='mega'>12</td></tr>
+<tr class='pick' data-line="08 11 25 47 52 13QP"><td class='n'>5</td><td>08-11-25-47-52</td><td class='mega'>13</td></tr>
+<tr class='pick' data-line="06 56 62 65 70 11QP"><td class='n'>6</td><td>06-56-62-65-70</td><td class='mega'>11</td></tr>
+<tr class='pick' data-line="02 23 29 44 66 23QP"><td class='n'>7</td><td>02-23-29-44-66</td><td class='mega'>23</td></tr>
+<tr class='pick' data-line="15 27 35 56 63 22QP"><td class='n'>8</td><td>15-27-35-56-63</td><td class='mega'>22</td></tr>
+<tr class='pick' data-line="17 24 27 33 61 07QP"><td class='n'>9</td><td>17-24-27-33-61</td><td class='mega'>07</td></tr>
+<tr class='pick' data-line="26 50 56 58 68 17QP"><td class='n'>10</td><td>26-50-56-58-68</td><td class='mega'>17</td></tr>
+<tr class='pick' data-line="14 26 32 57 62 22QP"><td class='n'>11</td><td>14-26-32-57-62</td><td class='mega'>22</td></tr>
+<tr class='pick' data-line="05 09 47 57 62 24QP"><td class='n'>12</td><td>05-09-47-57-62</td><td class='mega'>24</td></tr>
+<tr class='pick' data-line="38 53 56 57 65 01QP"><td class='n'>13</td><td>38-53-56-57-65</td><td class='mega'>01</td></tr>
+<tr class='pick' data-line="28 43 55 63 66 18QP"><td class='n'>14</td><td>28-43-55-63-66</td><td class='mega'>18</td></tr>
+<tr class='pick' data-line="14 34 38 54 62 06QP"><td class='n'>15</td><td>14-34-38-54-62</td><td class='mega'>06</td></tr>
+<tr class='pick' data-line="09 13 14 52 53 08QP"><td class='n'>16</td><td>09-13-14-52-53</td><td class='mega'>08</td></tr>
+<tr class='pick' data-line="05 12 18 31 52 18QP"><td class='n'>17</td><td>05-12-18-31-52</td><td class='mega'>18</td></tr>
+<tr class='pick' data-line="50 53 54 64 69 11QP"><td class='n'>18</td><td>50-53-54-64-69</td><td class='mega'>11</td></tr>
+<tr class='pick' data-line="02 07 18 33 53 15QP"><td class='n'>19</td><td>02-07-18-33-53</td><td class='mega'>15</td></tr>
+<tr class='pick' data-line="08 09 10 32 64 15QP"><td class='n'>20</td><td>08-09-10-32-64</td><td class='mega'>15</td></tr>
+<tr class='pick' data-line="03 30 37 52 62 01QP"><td class='n'>21</td><td>03-30-37-52-62</td><td class='mega'>01</td></tr>
+<tr class='pick' data-line="21 22 28 29 68 06QP"><td class='n'>22</td><td>21-22-28-29-68</td><td class='mega'>06</td></tr>
+<tr class='pick' data-line="04 11 14 34 52 18QP"><td class='n'>23</td><td>04-11-14-34-52</td><td class='mega'>18</td></tr>
+<tr class='pick' data-line="01 13 48 54 66 03QP"><td class='n'>24</td><td>01-13-48-54-66</td><td class='mega'>03</td></tr>
+<tr class='pick' data-line="06 26 35 55 69 03QP"><td class='n'>25</td><td>06-26-35-55-69</td><td class='mega'>03</td></tr>
+<tr class='pick' data-line="09 19 22 24 53 13QP"><td class='n'>26</td><td>09-19-22-24-53</td><td class='mega'>13</td></tr>
+<tr class='pick' data-line="02 06 29 44 63 03QP"><td class='n'>27</td><td>02-06-29-44-63</td><td class='mega'>03</td></tr>
+<tr class='pick' data-line="06 18 21 58 61 05QP"><td class='n'>28</td><td>06-18-21-58-61</td><td class='mega'>05</td></tr>
+<tr class='pick' data-line="13 15 34 63 67 21QP"><td class='n'>29</td><td>13-15-34-63-67</td><td class='mega'>21</td></tr>
+<tr class='pick' data-line="08 24 41 57 62 09QP"><td class='n'>30</td><td>08-24-41-57-62</td><td class='mega'>09</td></tr>
+<tr class='pick' data-line="01 07 21 45 68 22QP"><td class='n'>31</td><td>01-07-21-45-68</td><td class='mega'>22</td></tr>
+<tr class='pick' data-line="11 13 23 44 63 24QP"><td class='n'>32</td><td>11-13-23-44-63</td><td class='mega'>24</td></tr>
+<tr class='pick' data-line="10 19 39 43 46 07QP"><td class='n'>33</td><td>10-19-39-43-46</td><td class='mega'>07</td></tr>
+<tr class='pick' data-line="11 19 31 32 42 20QP"><td class='n'>34</td><td>11-19-31-32-42</td><td class='mega'>20</td></tr>
+<tr class='pick' data-line="10 24 46 66 67 14QP"><td class='n'>35</td><td>10-24-46-66-67</td><td class='mega'>14</td></tr>
+<tr class='pick' data-line="17 22 33 53 59 15QP"><td class='n'>36</td><td>17-22-33-53-59</td><td class='mega'>15</td></tr>
+<tr class='pick' data-line="08 10 34 43 68 17QP"><td class='n'>37</td><td>08-10-34-43-68</td><td class='mega'>17</td></tr>
+<tr class='pick' data-line="10 24 42 56 69 05QP"><td class='n'>38</td><td>10-24-42-56-69</td><td class='mega'>05</td></tr>
+<tr class='pick' data-line="09 12 20 21 53 01QP"><td class='n'>39</td><td>09-12-20-21-53</td><td class='mega'>01</td></tr>
+<tr class='pick' data-line="02 29 33 34 47 07QP"><td class='n'>40</td><td>02-29-33-34-47</td><td class='mega'>07</td></tr>
+<tr class='pick' data-line="08 14 27 32 68 24QP"><td class='n'>41</td><td>08-14-27-32-68</td><td class='mega'>24</td></tr>
+<tr class='pick' data-line="18 21 30 32 54 08QP"><td class='n'>42</td><td>18-21-30-32-54</td><td class='mega'>08</td></tr>
+<tr class='pick' data-line="01 50 62 64 68 15QP"><td class='n'>43</td><td>01-50-62-64-68</td><td class='mega'>15</td></tr>
+<tr class='pick' data-line="07 09 20 45 61 10QP"><td class='n'>44</td><td>07-09-20-45-61</td><td class='mega'>10</td></tr>
+<tr class='pick' data-line="03 40 50 52 60 13QP"><td class='n'>45</td><td>03-40-50-52-60</td><td class='mega'>13</td></tr>
+<tr class='pick' data-line="24 28 33 42 63 07QP"><td class='n'>46</td><td>24-28-33-42-63</td><td class='mega'>07</td></tr>
+<tr class='pick' data-line="03 07 24 50 70 14QP"><td class='n'>47</td><td>03-07-24-50-70</td><td class='mega'>14</td></tr>
+<tr class='pick' data-line="12 32 41 51 65 20QP"><td class='n'>48</td><td>12-32-41-51-65</td><td class='mega'>20</td></tr>
+<tr class='pick' data-line="18 22 40 41 64 04QP"><td class='n'>49</td><td>18-22-40-41-64</td><td class='mega'>04</td></tr>
+<tr class='pick' data-line="13 21 27 50 69 24QP"><td class='n'>50</td><td>13-21-27-50-69</td><td class='mega'>24</td></tr>
+<tr class='pick' data-line="16 19 40 45 55 17QP"><td class='n'>51</td><td>16-19-40-45-55</td><td class='mega'>17</td></tr>
+<tr class='pick' data-line="26 49 50 55 58 09QP"><td class='n'>52</td><td>26-49-50-55-58</td><td class='mega'>09</td></tr>
+<tr class='pick' data-line="19 27 28 43 50 16QP"><td class='n'>53</td><td>19-27-28-43-50</td><td class='mega'>16</td></tr>
+<tr class='pick' data-line="01 16 42 47 59 08QP"><td class='n'>54</td><td>01-16-42-47-59</td><td class='mega'>08</td></tr>
+<tr class='pick' data-line="01 40 48 55 62 22QP"><td class='n'>55</td><td>01-40-48-55-62</td><td class='mega'>22</td></tr>
+<tr class='pick' data-line="01 06 39 41 45 05QP"><td class='n'>56</td><td>01-06-39-41-45</td><td class='mega'>05</td></tr>
+<tr class='pick' data-line="09 11 37 39 42 17QP"><td class='n'>57</td><td>09-11-37-39-42</td><td class='mega'>17</td></tr>
+<tr class='pick' data-line="15 20 25 29 68 10QP"><td class='n'>58</td><td>15-20-25-29-68</td><td class='mega'>10</td></tr>
+<tr class='pick' data-line="02 36 37 43 70 16QP"><td class='n'>59</td><td>02-36-37-43-70</td><td class='mega'>16</td></tr>
+<tr class='pick' data-line="27 41 46 61 63 22QP"><td class='n'>60</td><td>27-41-46-61-63</td><td class='mega'>22</td></tr>
+<tr class='pick' data-line="03 04 43 45 67 24QP"><td class='n'>61</td><td>03-04-43-45-67</td><td class='mega'>24</td></tr>
+<tr class='pick' data-line="02 27 28 32 42 20QP"><td class='n'>62</td><td>02-27-28-32-42</td><td class='mega'>20</td></tr>
+<tr class='pick' data-line="01 39 41 58 68 23QP"><td class='n'>63</td><td>01-39-41-58-68</td><td class='mega'>23</td></tr>
+<tr class='pick' data-line="04 44 59 61 62 10QP"><td class='n'>64</td><td>04-44-59-61-62</td><td class='mega'>10</td></tr>
+<tr class='pick' data-line="05 26 47 52 56 23QP"><td class='n'>65</td><td>05-26-47-52-56</td><td class='mega'>23</td></tr>
+<tr class='pick' data-line="06 21 26 40 48 05QP"><td class='n'>66</td><td>06-21-26-40-48</td><td class='mega'>05</td></tr>
+<tr class='pick' data-line="22 30 49 51 54 01QP"><td class='n'>67</td><td>22-30-49-51-54</td><td class='mega'>01</td></tr>
+<tr class='pick' data-line="07 15 47 58 68 11QP"><td class='n'>68</td><td>07-15-47-58-68</td><td class='mega'>11</td></tr>
+<tr class='pick' data-line="04 26 57 60 66 07QP"><td class='n'>69</td><td>04-26-57-60-66</td><td class='mega'>07</td></tr>
+<tr class='pick' data-line="04 10 14 21 29 19QP"><td class='n'>70</td><td>04-10-14-21-29</td><td class='mega'>19</td></tr>
+<tr class='pick' data-line="02 40 53 60 67 18QP"><td class='n'>71</td><td>02-40-53-60-67</td><td class='mega'>18</td></tr>
+<tr class='pick' data-line="05 32 34 62 64 10QP"><td class='n'>72</td><td>05-32-34-62-64</td><td class='mega'>10</td></tr>
+<tr class='pick' data-line="02 09 17 20 41 19QP"><td class='n'>73</td><td>02-09-17-20-41</td><td class='mega'>19</td></tr>
+<tr class='pick' data-line="27 37 42 48 55 22QP"><td class='n'>74</td><td>27-37-42-48-55</td><td class='mega'>22</td></tr>
+<tr class='pick' data-line="08 18 19 43 62 09QP"><td class='n'>75</td><td>08-18-19-43-62</td><td class='mega'>09</td></tr>
+<tr class='pick' data-line="15 23 34 47 54 12QP"><td class='n'>76</td><td>15-23-34-47-54</td><td class='mega'>12</td></tr>
+<tr class='pick' data-line="14 25 40 49 62 07QP"><td class='n'>77</td><td>14-25-40-49-62</td><td class='mega'>07</td></tr>
+<tr class='pick' data-line="31 36 37 47 50 14QP"><td class='n'>78</td><td>31-36-37-47-50</td><td class='mega'>14</td></tr>
+<tr class='pick' data-line="13 24 25 26 53 13QP"><td class='n'>79</td><td>13-24-25-26-53</td><td class='mega'>13</td></tr>
+<tr class='pick' data-line="08 10 18 27 43 04QP"><td class='n'>80</td><td>08-10-18-27-43</td><td class='mega'>04</td></tr>
+<tr class='pick' data-line="14 27 44 60 62 20QP"><td class='n'>81</td><td>14-27-44-60-62</td><td class='mega'>20</td></tr>
+<tr class='pick' data-line="10 18 22 27 34 18QP"><td class='n'>82</td><td>10-18-22-27-34</td><td class='mega'>18</td></tr>
+<tr class='pick' data-line="07 15 18 37 58 12QP"><td class='n'>83</td><td>07-15-18-37-58</td><td class='mega'>12</td></tr>
+<tr class='pick' data-line="10 29 33 45 48 14QP"><td class='n'>84</td><td>10-29-33-45-48</td><td class='mega'>14</td></tr>
+<tr class='pick' data-line="07 08 18 44 62 08QP"><td class='n'>85</td><td>07-08-18-44-62</td><td class='mega'>08</td></tr>
+<tr class='pick' data-line="18 28 34 64 69 17QP"><td class='n'>86</td><td>18-28-34-64-69</td><td class='mega'>17</td></tr>
+<tr class='pick' data-line="17 29 33 51 62 24QP"><td class='n'>87</td><td>17-29-33-51-62</td><td class='mega'>24</td></tr>
+<tr class='pick' data-line="04 15 67 69 70 06QP"><td class='n'>88</td><td>04-15-67-69-70</td><td class='mega'>06</td></tr>
+<tr class='pick' data-line="03 06 11 19 20 14QP"><td class='n'>89</td><td>03-06-11-19-20</td><td class='mega'>14</td></tr>
+<tr class='pick' data-line="05 21 34 40 51 06QP"><td class='n'>90</td><td>05-21-34-40-51</td><td class='mega'>06</td></tr>
+<tr class='pick' data-line="19 22 28 32 68 18QP"><td class='n'>91</td><td>19-22-28-32-68</td><td class='mega'>18</td></tr>
+<tr class='pick' data-line="05 24 25 55 65 03QP"><td class='n'>92</td><td>05-24-25-55-65</td><td class='mega'>03</td></tr>
+<tr class='pick' data-line="08 30 52 56 59 17QP"><td class='n'>93</td><td>08-30-52-56-59</td><td class='mega'>17</td></tr>
+<tr class='pick' data-line="15 45 55 59 68 22QP"><td class='n'>94</td><td>15-45-55-59-68</td><td class='mega'>22</td></tr>
+<tr class='pick' data-line="21 43 50 61 67 21QP"><td class='n'>95</td><td>21-43-50-61-67</td><td class='mega'>21</td></tr>
+<tr class='pick' data-line="30 49 56 66 69 06QP"><td class='n'>96</td><td>30-49-56-66-69</td><td class='mega'>06</td></tr>
+<tr class='pick' data-line="11 39 45 63 70 21QP"><td class='n'>97</td><td>11-39-45-63-70</td><td class='mega'>21</td></tr>
+<tr class='pick' data-line="08 35 42 46 54 19QP"><td class='n'>98</td><td>08-35-42-46-54</td><td class='mega'>19</td></tr>
+<tr class='pick' data-line="17 33 46 50 65 04QP"><td class='n'>99</td><td>17-33-46-50-65</td><td class='mega'>04</td></tr>
+<tr class='pick' data-line="08 13 27 56 63 22QP"><td class='n'>100</td><td>08-13-27-56-63</td><td class='mega'>22</td></tr>
+<tr class='pick' data-line="02 12 27 50 69 04QP"><td class='n'>101</td><td>02-12-27-50-69</td><td class='mega'>04</td></tr>
+<tr class='pick' data-line="10 22 38 55 67 15QP"><td class='n'>102</td><td>10-22-38-55-67</td><td class='mega'>15</td></tr>
+<tr class='pick' data-line="04 07 28 32 59 11QP"><td class='n'>103</td><td>04-07-28-32-59</td><td class='mega'>11</td></tr>
+<tr class='pick' data-line="25 27 51 59 61 03QP"><td class='n'>104</td><td>25-27-51-59-61</td><td class='mega'>03</td></tr>
+<tr class='pick' data-line="12 20 34 56 70 11QP"><td class='n'>105</td><td>12-20-34-56-70</td><td class='mega'>11</td></tr>
+<tr class='pick' data-line="19 26 27 54 56 21QP"><td class='n'>106</td><td>19-26-27-54-56</td><td class='mega'>21</td></tr>
+<tr class='pick' data-line="08 57 58 60 64 11QP"><td class='n'>107</td><td>08-57-58-60-64</td><td class='mega'>11</td></tr>
+<tr class='pick' data-line="07 23 57 58 67 16QP"><td class='n'>108</td><td>07-23-57-58-67</td><td class='mega'>16</td></tr>
+<tr class='pick' data-line="06 32 35 62 63 17QP"><td class='n'>109</td><td>06-32-35-62-63</td><td class='mega'>17</td></tr>
+<tr class='pick' data-line="01 12 22 23 36 17QP"><td class='n'>110</td><td>01-12-22-23-36</td><td class='mega'>17</td></tr>
+<tr class='pick' data-line="16 21 41 43 45 22QP"><td class='n'>111</td><td>16-21-41-43-45</td><td class='mega'>22</td></tr>
+<tr class='pick' data-line="16 34 37 57 58 05QP"><td class='n'>112</td><td>16-34-37-57-58</td><td class='mega'>05</td></tr>
+<tr class='pick' data-line="27 35 49 68 69 14QP"><td class='n'>113</td><td>27-35-49-68-69</td><td class='mega'>14</td></tr>
+<tr class='pick' data-line="04 15 35 51 55 01QP"><td class='n'>114</td><td>04-15-35-51-55</td><td class='mega'>01</td></tr>
+<tr class='pick' data-line="17 43 46 47 68 02QP"><td class='n'>115</td><td>17-43-46-47-68</td><td class='mega'>02</td></tr>
+<tr class='pick' data-line="11 12 17 33 62 09QP"><td class='n'>116</td><td>11-12-17-33-62</td><td class='mega'>09</td></tr>
+<tr class='pick' data-line="18 23 34 36 48 02QP"><td class='n'>117</td><td>18-23-34-36-48</td><td class='mega'>02</td></tr>
+<tr class='pick' data-line="02 08 19 34 48 03QP"><td class='n'>118</td><td>02-08-19-34-48</td><td class='mega'>03</td></tr>
+<tr class='pick' data-line="01 03 19 37 44 17QP"><td class='n'>119</td><td>01-03-19-37-44</td><td class='mega'>17</td></tr>
+<tr class='pick' data-line="07 27 39 55 64 23QP"><td class='n'>120</td><td>07-27-39-55-64</td><td class='mega'>23</td></tr>
+<tr class='pick' data-line="44 48 55 61 63 02QP"><td class='n'>121</td><td>44-48-55-61-63</td><td class='mega'>02</td></tr>
+<tr class='pick' data-line="02 22 24 25 48 21QP"><td class='n'>122</td><td>02-22-24-25-48</td><td class='mega'>21</td></tr>
+<tr class='pick' data-line="19 20 29 35 38 15QP"><td class='n'>123</td><td>19-20-29-35-38</td><td class='mega'>15</td></tr>
+<tr class='pick' data-line="08 32 35 65 66 23QP"><td class='n'>124</td><td>08-32-35-65-66</td><td class='mega'>23</td></tr>
+<tr class='pick' data-line="10 14 39 48 67 21QP"><td class='n'>125</td><td>10-14-39-48-67</td><td class='mega'>21</td></tr>
+<tr class='pick' data-line="06 08 24 38 67 16QP"><td class='n'>126</td><td>06-08-24-38-67</td><td class='mega'>16</td></tr>
+<tr class='pick' data-line="24 33 49 64 68 11QP"><td class='n'>127</td><td>24-33-49-64-68</td><td class='mega'>11</td></tr>
+<tr class='pick' data-line="12 16 27 30 42 23QP"><td class='n'>128</td><td>12-16-27-30-42</td><td class='mega'>23</td></tr>
+<tr class='pick' data-line="02 24 35 64 67 20QP"><td class='n'>129</td><td>02-24-35-64-67</td><td class='mega'>20</td></tr>
+<tr class='pick' data-line="01 28 35 49 69 02QP"><td class='n'>130</td><td>01-28-35-49-69</td><td class='mega'>02</td></tr>
+<tr class='pick' data-line="03 04 40 41 45 22QP"><td class='n'>131</td><td>03-04-40-41-45</td><td class='mega'>22</td></tr>
+<tr class='pick' data-line="15 19 39 57 69 10QP"><td class='n'>132</td><td>15-19-39-57-69</td><td class='mega'>10</td></tr>
+<tr class='pick' data-line="02 13 36 40 67 17QP"><td class='n'>133</td><td>02-13-36-40-67</td><td class='mega'>17</td></tr>
+<tr class='pick' data-line="02 08 11 21 49 24QP"><td class='n'>134</td><td>02-08-11-21-49</td><td class='mega'>24</td></tr>
+<tr class='pick' data-line="15 33 37 62 65 24QP"><td class='n'>135</td><td>15-33-37-62-65</td><td class='mega'>24</td></tr>
+<tr class='pick' data-line="03 28 35 60 68 12QP"><td class='n'>136</td><td>03-28-35-60-68</td><td class='mega'>12</td></tr>
+<tr class='pick' data-line="22 28 37 65 70 22QP"><td class='n'>137</td><td>22-28-37-65-70</td><td class='mega'>22</td></tr>
+<tr class='pick' data-line="14 17 55 62 69 15QP"><td class='n'>138</td><td>14-17-55-62-69</td><td class='mega'>15</td></tr>
+<tr class='pick' data-line="03 24 25 36 53 09QP"><td class='n'>139</td><td>03-24-25-36-53</td><td class='mega'>09</td></tr>
+<tr class='pick' data-line="15 27 28 35 38 22QP"><td class='n'>140</td><td>15-27-28-35-38</td><td class='mega'>22</td></tr>
+<tr class='pick' data-line="09 11 32 59 63 11QP"><td class='n'>141</td><td>09-11-32-59-63</td><td class='mega'>11</td></tr>
+<tr class='pick' data-line="13 32 40 55 64 04QP"><td class='n'>142</td><td>13-32-40-55-64</td><td class='mega'>04</td></tr>
+<tr class='pick' data-line="32 33 38 51 58 09QP"><td class='n'>143</td><td>32-33-38-51-58</td><td class='mega'>09</td></tr>
+<tr class='pick' data-line="16 33 39 59 62 10QP"><td class='n'>144</td><td>16-33-39-59-62</td><td class='mega'>10</td></tr>
+<tr class='pick' data-line="05 06 16 29 36 04QP"><td class='n'>145</td><td>05-06-16-29-36</td><td class='mega'>04</td></tr>
+<tr class='pick' data-line="48 49 58 60 65 21QP"><td class='n'>146</td><td>48-49-58-60-65</td><td class='mega'>21</td></tr>
+<tr class='pick' data-line="37 46 54 59 61 01QP"><td class='n'>147</td><td>37-46-54-59-61</td><td class='mega'>01</td></tr>
+<tr class='pick' data-line="12 18 31 45 60 16QP"><td class='n'>148</td><td>12-18-31-45-60</td><td class='mega'>16</td></tr>
+<tr class='pick' data-line="01 04 14 34 66 15QP"><td class='n'>149</td><td>01-04-14-34-66</td><td class='mega'>15</td></tr>
+<tr class='pick' data-line="02 36 43 62 65 01QP"><td class='n'>150</td><td>02-36-43-62-65</td><td class='mega'>01</td></tr>
+<tr class='pick' data-line="03 04 29 52 64 20QP"><td class='n'>151</td><td>03-04-29-52-64</td><td class='mega'>20</td></tr>
+<tr class='pick' data-line="01 09 11 41 64 08QP"><td class='n'>152</td><td>01-09-11-41-64</td><td class='mega'>08</td></tr>
+<tr class='pick' data-line="07 33 37 50 56 10QP"><td class='n'>153</td><td>07-33-37-50-56</td><td class='mega'>10</td></tr>
+<tr class='pick' data-line="06 37 43 51 58 09QP"><td class='n'>154</td><td>06-37-43-51-58</td><td class='mega'>09</td></tr>
+<tr class='pick' data-line="05 08 11 44 69 12QP"><td class='n'>155</td><td>05-08-11-44-69</td><td class='mega'>12</td></tr>
+<tr class='pick' data-line="18 29 41 50 66 18QP"><td class='n'>156</td><td>18-29-41-50-66</td><td class='mega'>18</td></tr>
+<tr class='pick' data-line="03 11 18 25 61 21QP"><td class='n'>157</td><td>03-11-18-25-61</td><td class='mega'>21</td></tr>
+<tr class='pick' data-line="30 34 42 46 68 23QP"><td class='n'>158</td><td>30-34-42-46-68</td><td class='mega'>23</td></tr>
+<tr class='pick' data-line="22 44 48 63 64 22QP"><td class='n'>159</td><td>22-44-48-63-64</td><td class='mega'>22</td></tr>
+<tr class='pick' data-line="04 23 53 55 64 14QP"><td class='n'>160</td><td>04-23-53-55-64</td><td class='mega'>14</td></tr>
+<tr class='pick' data-line="10 36 38 44 65 04QP"><td class='n'>161</td><td>10-36-38-44-65</td><td class='mega'>04</td></tr>
+<tr class='pick' data-line="05 35 38 51 70 02QP"><td class='n'>162</td><td>05-35-38-51-70</td><td class='mega'>02</td></tr>
+<tr class='pick' data-line="22 27 46 49 51 10QP"><td class='n'>163</td><td>22-27-46-49-51</td><td class='mega'>10</td></tr>
+<tr class='pick' data-line="09 10 19 39 45 06QP"><td class='n'>164</td><td>09-10-19-39-45</td><td class='mega'>06</td></tr>
+<tr class='pick' data-line="03 04 34 42 67 21QP"><td class='n'>165</td><td>03-04-34-42-67</td><td class='mega'>21</td></tr>
+<tr class='pick' data-line="02 08 40 50 52 06QP"><td class='n'>166</td><td>02-08-40-50-52</td><td class='mega'>06</td></tr>
+<tr class='pick' data-line="36 38 52 57 61 09QP"><td class='n'>167</td><td>36-38-52-57-61</td><td class='mega'>09</td></tr>
+<tr class='pick' data-line="09 18 45 56 67 08QP"><td class='n'>168</td><td>09-18-45-56-67</td><td class='mega'>08</td></tr>
+<tr class='pick' data-line="32 36 40 41 58 01QP"><td class='n'>169</td><td>32-36-40-41-58</td><td class='mega'>01</td></tr>
+<tr class='pick' data-line="02 17 20 33 34 03QP"><td class='n'>170</td><td>02-17-20-33-34</td><td class='mega'>03</td></tr>
+<tr class='pick' data-line="04 24 27 41 42 10QP"><td class='n'>171</td><td>04-24-27-41-42</td><td class='mega'>10</td></tr>
+<tr class='pick' data-line="20 26 51 63 67 03QP"><td class='n'>172</td><td>20-26-51-63-67</td><td class='mega'>03</td></tr>
+<tr class='pick' data-line="25 36 38 56 57 10QP"><td class='n'>173</td><td>25-36-38-56-57</td><td class='mega'>10</td></tr>
+<tr class='pick' data-line="06 21 45 49 69 18QP"><td class='n'>174</td><td>06-21-45-49-69</td><td class='mega'>18</td></tr>
+<tr class='pick' data-line="18 29 49 58 65 19QP"><td class='n'>175</td><td>18-29-49-58-65</td><td class='mega'>19</td></tr>
+<tr class='pick' data-line="02 04 15 19 45 18QP"><td class='n'>176</td><td>02-04-15-19-45</td><td class='mega'>18</td></tr>
+<tr class='pick' data-line="11 20 55 61 63 21QP"><td class='n'>177</td><td>11-20-55-61-63</td><td class='mega'>21</td></tr>
+<tr class='pick' data-line="04 25 31 46 68 07QP"><td class='n'>178</td><td>04-25-31-46-68</td><td class='mega'>07</td></tr>
+<tr class='pick' data-line="01 04 15 35 39 04QP"><td class='n'>179</td><td>01-04-15-35-39</td><td class='mega'>04</td></tr>
+<tr class='pick' data-line="23 31 50 61 64 23QP"><td class='n'>180</td><td>23-31-50-61-64</td><td class='mega'>23</td></tr>
+<tr class='pick' data-line="18 19 38 39 45 16QP"><td class='n'>181</td><td>18-19-38-39-45</td><td class='mega'>16</td></tr>
+<tr class='pick' data-line="01 09 12 19 25 22QP"><td class='n'>182</td><td>01-09-12-19-25</td><td class='mega'>22</td></tr>
+<tr class='pick' data-line="27 47 55 57 68 21QP"><td class='n'>183</td><td>27-47-55-57-68</td><td class='mega'>21</td></tr>
+<tr class='pick' data-line="17 21 32 33 58 20QP"><td class='n'>184</td><td>17-21-32-33-58</td><td class='mega'>20</td></tr>
+<tr class='pick' data-line="16 17 19 54 69 02QP"><td class='n'>185</td><td>16-17-19-54-69</td><td class='mega'>02</td></tr>
+<tr class='pick' data-line="25 30 51 58 63 21QP"><td class='n'>186</td><td>25-30-51-58-63</td><td class='mega'>21</td></tr>
+<tr class='pick' data-line="27 34 54 61 63 09QP"><td class='n'>187</td><td>27-34-54-61-63</td><td class='mega'>09</td></tr>
+<tr class='pick' data-line="01 24 25 36 54 12QP"><td class='n'>188</td><td>01-24-25-36-54</td><td class='mega'>12</td></tr>
+<tr class='pick' data-line="06 38 51 55 59 02QP"><td class='n'>189</td><td>06-38-51-55-59</td><td class='mega'>02</td></tr>
+<tr class='pick' data-line="14 32 40 46 66 15QP"><td class='n'>190</td><td>14-32-40-46-66</td><td class='mega'>15</td></tr>
+<tr class='pick' data-line="04 08 11 47 52 20QP"><td class='n'>191</td><td>04-08-11-47-52</td><td class='mega'>20</td></tr>
+<tr class='pick' data-line="02 30 31 48 63 09QP"><td class='n'>192</td><td>02-30-31-48-63</td><td class='mega'>09</td></tr>
+<tr class='pick' data-line="04 10 29 32 41 08QP"><td class='n'>193</td><td>04-10-29-32-41</td><td class='mega'>08</td></tr>
+<tr class='pick' data-line="10 17 51 54 62 19QP"><td class='n'>194</td><td>10-17-51-54-62</td><td class='mega'>19</td></tr>
+<tr class='pick' data-line="04 23 26 41 67 21QP"><td class='n'>195</td><td>04-23-26-41-67</td><td class='mega'>21</td></tr>
+<tr class='pick' data-line="15 21 31 51 62 05QP"><td class='n'>196</td><td>15-21-31-51-62</td><td class='mega'>05</td></tr>
+<tr class='pick' data-line="19 21 24 27 47 03QP"><td class='n'>197</td><td>19-21-24-27-47</td><td class='mega'>03</td></tr>
+<tr class='pick' data-line="39 40 51 66 69 10QP"><td class='n'>198</td><td>39-40-51-66-69</td><td class='mega'>10</td></tr>
+<tr class='pick' data-line="13 16 46 64 67 07QP"><td class='n'>199</td><td>13-16-46-64-67</td><td class='mega'>07</td></tr>
+<tr class='pick' data-line="11 22 35 45 66 10QP"><td class='n'>200</td><td>11-22-35-45-66</td><td class='mega'>10</td></tr>
+<tr class='pick' data-line="23 26 28 32 63 08QP"><td class='n'>201</td><td>23-26-28-32-63</td><td class='mega'>08</td></tr>
+<tr class='pick' data-line="06 08 25 42 59 11QP"><td class='n'>202</td><td>06-08-25-42-59</td><td class='mega'>11</td></tr>
+<tr class='pick' data-line="07 10 15 22 37 18QP"><td class='n'>203</td><td>07-10-15-22-37</td><td class='mega'>18</td></tr>
+<tr class='pick' data-line="25 36 55 56 66 20QP"><td class='n'>204</td><td>25-36-55-56-66</td><td class='mega'>20</td></tr>
+<tr class='pick' data-line="17 19 25 41 55 16QP"><td class='n'>205</td><td>17-19-25-41-55</td><td class='mega'>16</td></tr>
+<tr class='pick' data-line="05 14 42 49 55 04QP"><td class='n'>206</td><td>05-14-42-49-55</td><td class='mega'>04</td></tr>
+<tr class='pick' data-line="12 39 58 59 62 18QP"><td class='n'>207</td><td>12-39-58-59-62</td><td class='mega'>18</td></tr>
+<tr class='pick' data-line="15 35 36 48 56 09QP"><td class='n'>208</td><td>15-35-36-48-56</td><td class='mega'>09</td></tr>
+<tr class='pick' data-line="04 16 41 54 68 11QP"><td class='n'>209</td><td>04-16-41-54-68</td><td class='mega'>11</td></tr>
+<tr class='pick' data-line="01 08 17 33 34 08QP"><td class='n'>210</td><td>01-08-17-33-34</td><td class='mega'>08</td></tr>
+<tr class='pick' data-line="10 18 44 45 56 15QP"><td class='n'>211</td><td>10-18-44-45-56</td><td class='mega'>15</td></tr>
+<tr class='pick' data-line="05 23 51 55 58 10QP"><td class='n'>212</td><td>05-23-51-55-58</td><td class='mega'>10</td></tr>
+<tr class='pick' data-line="15 22 55 67 69 10QP"><td class='n'>213</td><td>15-22-55-67-69</td><td class='mega'>10</td></tr>
+<tr class='pick' data-line="02 05 24 37 41 09QP"><td class='n'>214</td><td>02-05-24-37-41</td><td class='mega'>09</td></tr>
+<tr class='pick' data-line="08 09 12 55 57 22QP"><td class='n'>215</td><td>08-09-12-55-57</td><td class='mega'>22</td></tr>
+<tr class='pick' data-line="15 27 29 40 64 11QP"><td class='n'>216</td><td>15-27-29-40-64</td><td class='mega'>11</td></tr>
+<tr class='pick' data-line="12 14 16 28 58 24QP"><td class='n'>217</td><td>12-14-16-28-58</td><td class='mega'>24</td></tr>
+<tr class='pick' data-line="02 20 40 46 48 20QP"><td class='n'>218</td><td>02-20-40-46-48</td><td class='mega'>20</td></tr>
+<tr class='pick' data-line="01 08 33 64 69 23QP"><td class='n'>219</td><td>01-08-33-64-69</td><td class='mega'>23</td></tr>
+<tr class='pick' data-line="19 25 39 48 59 14QP"><td class='n'>220</td><td>19-25-39-48-59</td><td class='mega'>14</td></tr>
+<tr class='pick' data-line="05 07 36 48 55 15QP"><td class='n'>221</td><td>05-07-36-48-55</td><td class='mega'>15</td></tr>
+<tr class='pick' data-line="06 08 34 38 69 23QP"><td class='n'>222</td><td>06-08-34-38-69</td><td class='mega'>23</td></tr>
+<tr class='pick' data-line="15 16 35 55 61 08QP"><td class='n'>223</td><td>15-16-35-55-61</td><td class='mega'>08</td></tr>
+<tr class='pick' data-line="25 41 45 61 69 09QP"><td class='n'>224</td><td>25-41-45-61-69</td><td class='mega'>09</td></tr>
+<tr class='pick' data-line="04 32 38 41 60 11QP"><td class='n'>225</td><td>04-32-38-41-60</td><td class='mega'>11</td></tr>
+<tr class='pick' data-line="19 20 37 48 52 10QP"><td class='n'>226</td><td>19-20-37-48-52</td><td class='mega'>10</td></tr>
+<tr class='pick' data-line="05 31 47 65 69 23QP"><td class='n'>227</td><td>05-31-47-65-69</td><td class='mega'>23</td></tr>
+<tr class='pick' data-line="09 40 41 42 43 11QP"><td class='n'>228</td><td>09-40-41-42-43</td><td class='mega'>11</td></tr>
+<tr class='pick' data-line="14 20 24 59 70 02QP"><td class='n'>229</td><td>14-20-24-59-70</td><td class='mega'>02</td></tr>
+<tr class='pick' data-line="21 31 36 53 65 09QP"><td class='n'>230</td><td>21-31-36-53-65</td><td class='mega'>09</td></tr>
+<tr class='pick' data-line="01 38 54 57 62 23QP"><td class='n'>231</td><td>01-38-54-57-62</td><td class='mega'>23</td></tr>
+<tr class='pick' data-line="50 52 54 67 68 01QP"><td class='n'>232</td><td>50-52-54-67-68</td><td class='mega'>01</td></tr>
+<tr class='pick' data-line="41 44 46 51 53 24QP"><td class='n'>233</td><td>41-44-46-51-53</td><td class='mega'>24</td></tr>
+<tr class='pick' data-line="30 33 36 39 63 24QP"><td class='n'>234</td><td>30-33-36-39-63</td><td class='mega'>24</td></tr>
+<tr class='pick' data-line="16 33 42 57 64 04QP"><td class='n'>235</td><td>16-33-42-57-64</td><td class='mega'>04</td></tr>
+<tr class='pick' data-line="01 05 07 18 53 15QP"><td class='n'>236</td><td>01-05-07-18-53</td><td class='mega'>15</td></tr>
+<tr class='pick' data-line="01 23 31 51 54 12QP"><td class='n'>237</td><td>01-23-31-51-54</td><td class='mega'>12</td></tr>
+<tr class='pick' data-line="10 22 24 43 68 02QP"><td class='n'>238</td><td>10-22-24-43-68</td><td class='mega'>02</td></tr>
+<tr class='pick' data-line="15 19 30 34 39 18QP"><td class='n'>239</td><td>15-19-30-34-39</td><td class='mega'>18</td></tr>
+<tr class='pick' data-line="08 18 38 63 70 05QP"><td class='n'>240</td><td>08-18-38-63-70</td><td class='mega'>05</td></tr>
+<tr class='pick' data-line="09 14 42 47 68 08QP"><td class='n'>241</td><td>09-14-42-47-68</td><td class='mega'>08</td></tr>
+<tr class='pick' data-line="04 21 35 50 52 10QP"><td class='n'>242</td><td>04-21-35-50-52</td><td class='mega'>10</td></tr>
+<tr class='pick' data-line="05 22 25 36 56 07QP"><td class='n'>243</td><td>05-22-25-36-56</td><td class='mega'>07</td></tr>
+<tr class='pick' data-line="32 35 47 55 70 23QP"><td class='n'>244</td><td>32-35-47-55-70</td><td class='mega'>23</td></tr>
+<tr class='pick' data-line="03 16 18 44 48 13QP"><td class='n'>245</td><td>03-16-18-44-48</td><td class='mega'>13</td></tr>
+<tr class='pick' data-line="03 15 33 38 53 04QP"><td class='n'>246</td><td>03-15-33-38-53</td><td class='mega'>04</td></tr>
+<tr class='pick' data-line="15 17 29 30 66 16QP"><td class='n'>247</td><td>15-17-29-30-66</td><td class='mega'>16</td></tr>
+<tr class='pick' data-line="04 18 43 54 67 18QP"><td class='n'>248</td><td>04-18-43-54-67</td><td class='mega'>18</td></tr>
+<tr class='pick' data-line="03 27 34 40 44 19QP"><td class='n'>249</td><td>03-27-34-40-44</td><td class='mega'>19</td></tr>
+<tr class='pick' data-line="23 24 35 38 41 20QP"><td class='n'>250</td><td>23-24-35-38-41</td><td class='mega'>20</td></tr>
+<tr class='pick' data-line="05 24 26 32 43 18QP"><td class='n'>251</td><td>05-24-26-32-43</td><td class='mega'>18</td></tr>
+<tr class='pick' data-line="02 33 43 46 66 06QP"><td class='n'>252</td><td>02-33-43-46-66</td><td class='mega'>06</td></tr>
+<tr class='pick' data-line="04 14 25 38 45 14QP"><td class='n'>253</td><td>04-14-25-38-45</td><td class='mega'>14</td></tr>
+<tr class='pick' data-line="23 43 60 65 68 02QP"><td class='n'>254</td><td>23-43-60-65-68</td><td class='mega'>02</td></tr>
+<tr class='pick' data-line="07 10 16 30 42 24QP"><td class='n'>255</td><td>07-10-16-30-42</td><td class='mega'>24</td></tr>
+<tr class='pick' data-line="10 31 33 53 66 24QP"><td class='n'>256</td><td>10-31-33-53-66</td><td class='mega'>24</td></tr>
+<tr class='pick' data-line="04 21 42 53 66 06QP"><td class='n'>257</td><td>04-21-42-53-66</td><td class='mega'>06</td></tr>
+<tr class='pick' data-line="08 12 51 63 66 24QP"><td class='n'>258</td><td>08-12-51-63-66</td><td class='mega'>24</td></tr>
+<tr class='pick' data-line="24 36 45 63 70 21QP"><td class='n'>259</td><td>24-36-45-63-70</td><td class='mega'>21</td></tr>
+<tr class='pick' data-line="31 46 47 49 69 02QP"><td class='n'>260</td><td>31-46-47-49-69</td><td class='mega'>02</td></tr>
+<tr class='pick' data-line="01 09 42 57 67 01QP"><td class='n'>261</td><td>01-09-42-57-67</td><td class='mega'>01</td></tr>
+<tr class='pick' data-line="29 43 48 51 63 04QP"><td class='n'>262</td><td>29-43-48-51-63</td><td class='mega'>04</td></tr>
+<tr class='pick' data-line="12 30 48 66 69 05QP"><td class='n'>263</td><td>12-30-48-66-69</td><td class='mega'>05</td></tr>
+<tr class='pick' data-line="07 31 42 54 56 20QP"><td class='n'>264</td><td>07-31-42-54-56</td><td class='mega'>20</td></tr>
+<tr class='pick' data-line="03 31 37 56 59 03QP"><td class='n'>265</td><td>03-31-37-56-59</td><td class='mega'>03</td></tr>
+<tr class='pick' data-line="06 07 31 57 62 19QP"><td class='n'>266</td><td>06-07-31-57-62</td><td class='mega'>19</td></tr>
+<tr class='pick' data-line="17 26 41 62 65 03QP"><td class='n'>267</td><td>17-26-41-62-65</td><td class='mega'>03</td></tr>
+<tr class='pick' data-line="11 21 23 52 63 09QP"><td class='n'>268</td><td>11-21-23-52-63</td><td class='mega'>09</td></tr>
+<tr class='pick' data-line="23 27 37 43 49 20QP"><td class='n'>269</td><td>23-27-37-43-49</td><td class='mega'>20</td></tr>
+<tr class='pick' data-line="02 46 48 52 70 22QP"><td class='n'>270</td><td>02-46-48-52-70</td><td class='mega'>22</td></tr>
+<tr class='pick' data-line="03 16 43 52 56 09QP"><td class='n'>271</td><td>03-16-43-52-56</td><td class='mega'>09</td></tr>
+<tr class='pick' data-line="35 37 46 54 68 06QP"><td class='n'>272</td><td>35-37-46-54-68</td><td class='mega'>06</td></tr>
+<tr class='pick' data-line="19 28 44 52 63 23QP"><td class='n'>273</td><td>19-28-44-52-63</td><td class='mega'>23</td></tr>
+<tr class='pick' data-line="23 29 31 41 48 11QP"><td class='n'>274</td><td>23-29-31-41-48</td><td class='mega'>11</td></tr>
+<tr class='pick' data-line="04 14 15 28 57 14QP"><td class='n'>275</td><td>04-14-15-28-57</td><td class='mega'>14</td></tr>
+<tr class='pick' data-line="03 04 28 36 41 11QP"><td class='n'>276</td><td>03-04-28-36-41</td><td class='mega'>11</td></tr>
+<tr class='pick' data-line="05 06 28 30 62 13QP"><td class='n'>277</td><td>05-06-28-30-62</td><td class='mega'>13</td></tr>
+<tr class='pick' data-line="24 27 39 54 66 09QP"><td class='n'>278</td><td>24-27-39-54-66</td><td class='mega'>09</td></tr>
+<tr class='pick' data-line="04 15 42 47 55 09QP"><td class='n'>279</td><td>04-15-42-47-55</td><td class='mega'>09</td></tr>
+<tr class='pick' data-line="13 18 45 46 66 05QP"><td class='n'>280</td><td>13-18-45-46-66</td><td class='mega'>05</td></tr>
+<tr class='pick' data-line="01 19 37 63 67 23QP"><td class='n'>281</td><td>01-19-37-63-67</td><td class='mega'>23</td></tr>
+<tr class='pick' data-line="03 28 37 42 52 20QP"><td class='n'>282</td><td>03-28-37-42-52</td><td class='mega'>20</td></tr>
+<tr class='pick' data-line="20 21 40 42 52 21QP"><td class='n'>283</td><td>20-21-40-42-52</td><td class='mega'>21</td></tr>
+<tr class='pick' data-line="24 26 49 57 61 15QP"><td class='n'>284</td><td>24-26-49-57-61</td><td class='mega'>15</td></tr>
+<tr class='pick' data-line="25 32 40 49 57 08QP"><td class='n'>285</td><td>25-32-40-49-57</td><td class='mega'>08</td></tr>
+<tr class='pick' data-line="20 22 30 35 41 17QP"><td class='n'>286</td><td>20-22-30-35-41</td><td class='mega'>17</td></tr>
+<tr class='pick' data-line="08 16 37 43 54 13QP"><td class='n'>287</td><td>08-16-37-43-54</td><td class='mega'>13</td></tr>
+<tr class='pick' data-line="03 25 31 63 64 14QP"><td class='n'>288</td><td>03-25-31-63-64</td><td class='mega'>14</td></tr>
+<tr class='pick' data-line="10 23 33 50 65 20QP"><td class='n'>289</td><td>10-23-33-50-65</td><td class='mega'>20</td></tr>
+<tr class='pick' data-line="07 38 42 48 53 03QP"><td class='n'>290</td><td>07-38-42-48-53</td><td class='mega'>03</td></tr>
+<tr class='pick' data-line="24 36 38 59 69 06QP"><td class='n'>291</td><td>24-36-38-59-69</td><td class='mega'>06</td></tr>
+<tr class='pick' data-line="10 22 35 41 55 22QP"><td class='n'>292</td><td>10-22-35-41-55</td><td class='mega'>22</td></tr>
+<tr class='pick' data-line="10 36 40 62 68 09QP"><td class='n'>293</td><td>10-36-40-62-68</td><td class='mega'>09</td></tr>
+<tr class='pick' data-line="23 28 43 57 68 06QP"><td class='n'>294</td><td>23-28-43-57-68</td><td class='mega'>06</td></tr>
+<tr class='pick' data-line="02 45 49 60 64 01QP"><td class='n'>295</td><td>02-45-49-60-64</td><td class='mega'>01</td></tr>
+<tr class='pick' data-line="16 36 42 46 66 08QP"><td class='n'>296</td><td>16-36-42-46-66</td><td class='mega'>08</td></tr>
+<tr class='pick' data-line="12 19 32 49 58 13QP"><td class='n'>297</td><td>12-19-32-49-58</td><td class='mega'>13</td></tr>
+<tr class='pick' data-line="03 15 33 47 58 14QP"><td class='n'>298</td><td>03-15-33-47-58</td><td class='mega'>14</td></tr>
+<tr class='pick' data-line="13 23 50 52 61 19QP"><td class='n'>299</td><td>13-23-50-52-61</td><td class='mega'>19</td></tr>
+<tr class='pick' data-line="04 16 29 55 64 12QP"><td class='n'>300</td><td>04-16-29-55-64</td><td class='mega'>12</td></tr>
+<tr class='pick' data-line="12 30 31 33 60 04QP"><td class='n'>301</td><td>12-30-31-33-60</td><td class='mega'>04</td></tr>
+<tr class='pick' data-line="07 17 18 23 51 18QP"><td class='n'>302</td><td>07-17-18-23-51</td><td class='mega'>18</td></tr>
+<tr class='pick' data-line="09 22 45 64 68 06QP"><td class='n'>303</td><td>09-22-45-64-68</td><td class='mega'>06</td></tr>
+<tr class='pick' data-line="12 13 54 59 69 01QP"><td class='n'>304</td><td>12-13-54-59-69</td><td class='mega'>01</td></tr>
+<tr class='pick' data-line="02 14 18 39 44 06QP"><td class='n'>305</td><td>02-14-18-39-44</td><td class='mega'>06</td></tr>
+<tr class='pick' data-line="09 13 15 26 29 17QP"><td class='n'>306</td><td>09-13-15-26-29</td><td class='mega'>17</td></tr>
+<tr class='pick' data-line="13 18 39 45 65 06QP"><td class='n'>307</td><td>13-18-39-45-65</td><td class='mega'>06</td></tr>
+<tr class='pick' data-line="05 06 16 43 68 12QP"><td class='n'>308</td><td>05-06-16-43-68</td><td class='mega'>12</td></tr>
+<tr class='pick' data-line="13 20 43 44 66 17QP"><td class='n'>309</td><td>13-20-43-44-66</td><td class='mega'>17</td></tr>
+<tr class='pick' data-line="12 20 33 44 64 23QP"><td class='n'>310</td><td>12-20-33-44-64</td><td class='mega'>23</td></tr>
+<tr class='pick' data-line="04 16 29 63 67 23QP"><td class='n'>311</td><td>04-16-29-63-67</td><td class='mega'>23</td></tr>
+<tr class='pick' data-line="21 26 42 44 47 03QP"><td class='n'>312</td><td>21-26-42-44-47</td><td class='mega'>03</td></tr>
+<tr class='pick' data-line="36 38 44 52 67 24QP"><td class='n'>313</td><td>36-38-44-52-67</td><td class='mega'>24</td></tr>
+<tr class='pick' data-line="04 07 55 67 68 16QP"><td class='n'>314</td><td>04-07-55-67-68</td><td class='mega'>16</td></tr>
+<tr class='pick' data-line="02 03 44 58 63 05QP"><td class='n'>315</td><td>02-03-44-58-63</td><td class='mega'>05</td></tr>
+<tr class='pick' data-line="03 46 55 66 68 07QP"><td class='n'>316</td><td>03-46-55-66-68</td><td class='mega'>07</td></tr>
+<tr class='pick' data-line="15 32 33 47 53 01QP"><td class='n'>317</td><td>15-32-33-47-53</td><td class='mega'>01</td></tr>
+<tr class='pick' data-line="06 23 35 45 57 01QP"><td class='n'>318</td><td>06-23-35-45-57</td><td class='mega'>01</td></tr>
+<tr class='pick' data-line="11 20 21 23 27 20QP"><td class='n'>319</td><td>11-20-21-23-27</td><td class='mega'>20</td></tr>
+<tr class='pick' data-line="09 29 30 35 54 06QP"><td class='n'>320</td><td>09-29-30-35-54</td><td class='mega'>06</td></tr>
+<tr class='pick' data-line="43 51 57 66 69 16QP"><td class='n'>321</td><td>43-51-57-66-69</td><td class='mega'>16</td></tr>
+<tr class='pick' data-line="14 15 17 27 41 12QP"><td class='n'>322</td><td>14-15-17-27-41</td><td class='mega'>12</td></tr>
+<tr class='pick' data-line="10 35 39 48 58 11QP"><td class='n'>323</td><td>10-35-39-48-58</td><td class='mega'>11</td></tr>
+<tr class='pick' data-line="10 20 33 55 66 05QP"><td class='n'>324</td><td>10-20-33-55-66</td><td class='mega'>05</td></tr>
+<tr class='pick' data-line="29 44 48 50 61 17QP"><td class='n'>325</td><td>29-44-48-50-61</td><td class='mega'>17</td></tr>
+<tr class='pick' data-line="07 31 32 35 62 04QP"><td class='n'>326</td><td>07-31-32-35-62</td><td class='mega'>04</td></tr>
+<tr class='pick' data-line="26 52 62 64 66 16QP"><td class='n'>327</td><td>26-52-62-64-66</td><td class='mega'>16</td></tr>
+<tr class='pick' data-line="24 32 43 44 68 07QP"><td class='n'>328</td><td>24-32-43-44-68</td><td class='mega'>07</td></tr>
+<tr class='pick' data-line="14 15 17 34 35 12QP"><td class='n'>329</td><td>14-15-17-34-35</td><td class='mega'>12</td></tr>
+<tr class='pick' data-line="02 13 26 42 44 24QP"><td class='n'>330</td><td>02-13-26-42-44</td><td class='mega'>24</td></tr>
+<tr class='pick' data-line="12 14 18 27 69 08QP"><td class='n'>331</td><td>12-14-18-27-69</td><td class='mega'>08</td></tr>
+<tr class='pick' data-line="24 28 35 40 42 05QP"><td class='n'>332</td><td>24-28-35-40-42</td><td class='mega'>05</td></tr>
+<tr class='pick' data-line="01 10 26 59 64 16QP"><td class='n'>333</td><td>01-10-26-59-64</td><td class='mega'>16</td></tr>
+<tr class='pick' data-line="25 27 31 36 55 09QP"><td class='n'>334</td><td>25-27-31-36-55</td><td class='mega'>09</td></tr>
+<tr class='pick' data-line="20 29 31 38 59 16QP"><td class='n'>335</td><td>20-29-31-38-59</td><td class='mega'>16</td></tr>
+<tr class='pick' data-line="23 29 32 62 68 14QP"><td class='n'>336</td><td>23-29-32-62-68</td><td class='mega'>14</td></tr>
+<tr class='pick' data-line="13 22 27 42 54 07QP"><td class='n'>337</td><td>13-22-27-42-54</td><td class='mega'>07</td></tr>
+<tr class='pick' data-line="22 25 36 56 61 05QP"><td class='n'>338</td><td>22-25-36-56-61</td><td class='mega'>05</td></tr>
+<tr class='pick' data-line="01 28 44 47 63 21QP"><td class='n'>339</td><td>01-28-44-47-63</td><td class='mega'>21</td></tr>
+<tr class='pick' data-line="13 14 20 26 61 15QP"><td class='n'>340</td><td>13-14-20-26-61</td><td class='mega'>15</td></tr>
+<tr class='pick' data-line="04 25 32 33 42 19QP"><td class='n'>341</td><td>04-25-32-33-42</td><td class='mega'>19</td></tr>
+<tr class='pick' data-line="38 45 51 59 61 17QP"><td class='n'>342</td><td>38-45-51-59-61</td><td class='mega'>17</td></tr>
+<tr class='pick' data-line="20 34 50 53 57 07QP"><td class='n'>343</td><td>20-34-50-53-57</td><td class='mega'>07</td></tr>
+<tr class='pick' data-line="03 34 36 55 67 09QP"><td class='n'>344</td><td>03-34-36-55-67</td><td class='mega'>09</td></tr>
+<tr class='pick' data-line="15 16 37 51 62 21QP"><td class='n'>345</td><td>15-16-37-51-62</td><td class='mega'>21</td></tr>
+<tr class='pick' data-line="10 12 27 43 68 09QP"><td class='n'>346</td><td>10-12-27-43-68</td><td class='mega'>09</td></tr>
+<tr class='pick' data-line="02 20 28 35 69 18QP"><td class='n'>347</td><td>02-20-28-35-69</td><td class='mega'>18</td></tr>
+<tr class='pick' data-line="13 16 38 43 45 10QP"><td class='n'>348</td><td>13-16-38-43-45</td><td class='mega'>10</td></tr>
+<tr class='pick' data-line="14 16 22 42 43 21QP"><td class='n'>349</td><td>14-16-22-42-43</td><td class='mega'>21</td></tr>
+<tr class='pick' data-line="12 17 24 42 57 15QP"><td class='n'>350</td><td>12-17-24-42-57</td><td class='mega'>15</td></tr>
+<tr class='pick' data-line="11 21 24 35 61 18QP"><td class='n'>351</td><td>11-21-24-35-61</td><td class='mega'>18</td></tr>
+<tr class='pick' data-line="33 38 47 49 50 19QP"><td class='n'>352</td><td>33-38-47-49-50</td><td class='mega'>19</td></tr>
+<tr class='pick' data-line="09 21 27 28 55 14QP"><td class='n'>353</td><td>09-21-27-28-55</td><td class='mega'>14</td></tr>
+<tr class='pick' data-line="01 45 50 53 57 04QP"><td class='n'>354</td><td>01-45-50-53-57</td><td class='mega'>04</td></tr>
+<tr class='pick' data-line="11 21 27 47 65 15QP"><td class='n'>355</td><td>11-21-27-47-65</td><td class='mega'>15</td></tr>
+<tr class='pick' data-line="06 09 12 14 42 07QP"><td class='n'>356</td><td>06-09-12-14-42</td><td class='mega'>07</td></tr>
+<tr class='pick' data-line="16 26 38 40 41 14QP"><td class='n'>357</td><td>16-26-38-40-41</td><td class='mega'>14</td></tr>
+<tr class='pick' data-line="04 19 22 44 63 01QP"><td class='n'>358</td><td>04-19-22-44-63</td><td class='mega'>01</td></tr>
+<tr class='pick' data-line="07 13 38 45 66 17QP"><td class='n'>359</td><td>07-13-38-45-66</td><td class='mega'>17</td></tr>
+<tr class='pick' data-line="06 08 23 47 69 06QP"><td class='n'>360</td><td>06-08-23-47-69</td><td class='mega'>06</td></tr>
+<tr class='pick' data-line="10 13 20 40 69 20QP"><td class='n'>361</td><td>10-13-20-40-69</td><td class='mega'>20</td></tr>
+<tr class='pick' data-line="19 21 24 26 45 18QP"><td class='n'>362</td><td>19-21-24-26-45</td><td class='mega'>18</td></tr>
+<tr class='pick' data-line="11 23 45 58 68 17QP"><td class='n'>363</td><td>11-23-45-58-68</td><td class='mega'>17</td></tr>
+<tr class='pick' data-line="12 36 47 58 59 11QP"><td class='n'>364</td><td>12-36-47-58-59</td><td class='mega'>11</td></tr>
+<tr class='pick' data-line="25 30 52 58 62 07QP"><td class='n'>365</td><td>25-30-52-58-62</td><td class='mega'>07</td></tr>
+<tr class='pick' data-line="16 23 29 48 56 22QP"><td class='n'>366</td><td>16-23-29-48-56</td><td class='mega'>22</td></tr>
+<tr class='pick' data-line="11 21 24 40 64 10QP"><td class='n'>367</td><td>11-21-24-40-64</td><td class='mega'>10</td></tr>
+<tr class='pick' data-line="01 02 27 31 35 20QP"><td class='n'>368</td><td>01-02-27-31-35</td><td class='mega'>20</td></tr>
+<tr class='pick' data-line="25 39 42 50 65 20QP"><td class='n'>369</td><td>25-39-42-50-65</td><td class='mega'>20</td></tr>
+<tr class='pick' data-line="06 16 38 59 67 20QP"><td class='n'>370</td><td>06-16-38-59-67</td><td class='mega'>20</td></tr>
+<tr class='pick' data-line="07 09 32 36 50 24QP"><td class='n'>371</td><td>07-09-32-36-50</td><td class='mega'>24</td></tr>
+<tr class='pick' data-line="09 28 40 42 56 13QP"><td class='n'>372</td><td>09-28-40-42-56</td><td class='mega'>13</td></tr>
+<tr class='pick' data-line="13 18 43 64 68 08QP"><td class='n'>373</td><td>13-18-43-64-68</td><td class='mega'>08</td></tr>
+<tr class='pick' data-line="04 10 12 25 34 11QP"><td class='n'>374</td><td>04-10-12-25-34</td><td class='mega'>11</td></tr>
+<tr class='pick' data-line="12 25 43 53 65 17QP"><td class='n'>375</td><td>12-25-43-53-65</td><td class='mega'>17</td></tr>
+<tr class='pick' data-line="04 29 32 36 44 14QP"><td class='n'>376</td><td>04-29-32-36-44</td><td class='mega'>14</td></tr>
+<tr class='pick' data-line="03 06 17 25 49 07QP"><td class='n'>377</td><td>03-06-17-25-49</td><td class='mega'>07</td></tr>
+<tr class='pick' data-line="04 08 09 10 45 17QP"><td class='n'>378</td><td>04-08-09-10-45</td><td class='mega'>17</td></tr>
+<tr class='pick' data-line="32 47 48 52 55 23QP"><td class='n'>379</td><td>32-47-48-52-55</td><td class='mega'>23</td></tr>
+<tr class='pick' data-line="11 17 19 36 40 12QP"><td class='n'>380</td><td>11-17-19-36-40</td><td class='mega'>12</td></tr>
+<tr class='pick' data-line="18 19 26 36 51 16QP"><td class='n'>381</td><td>18-19-26-36-51</td><td class='mega'>16</td></tr>
+<tr class='pick' data-line="13 23 30 47 67 18QP"><td class='n'>382</td><td>13-23-30-47-67</td><td class='mega'>18</td></tr>
+<tr class='pick' data-line="35 51 54 61 65 14QP"><td class='n'>383</td><td>35-51-54-61-65</td><td class='mega'>14</td></tr>
+<tr class='pick' data-line="01 26 29 56 59 18QP"><td class='n'>384</td><td>01-26-29-56-59</td><td class='mega'>18</td></tr>
+<tr class='pick' data-line="03 18 39 54 59 15QP"><td class='n'>385</td><td>03-18-39-54-59</td><td class='mega'>15</td></tr>
+<tr class='pick' data-line="14 20 26 40 46 08QP"><td class='n'>386</td><td>14-20-26-40-46</td><td class='mega'>08</td></tr>
+<tr class='pick' data-line="03 12 21 44 65 16QP"><td class='n'>387</td><td>03-12-21-44-65</td><td class='mega'>16</td></tr>
+<tr class='pick' data-line="08 16 39 42 50 03QP"><td class='n'>388</td><td>08-16-39-42-50</td><td class='mega'>03</td></tr>
+<tr class='pick' data-line="06 16 60 65 68 16QP"><td class='n'>389</td><td>06-16-60-65-68</td><td class='mega'>16</td></tr>
+<tr class='pick' data-line="03 05 41 43 67 01QP"><td class='n'>390</td><td>03-05-41-43-67</td><td class='mega'>01</td></tr>
+<tr class='pick' data-line="34 36 41 45 59 05QP"><td class='n'>391</td><td>34-36-41-45-59</td><td class='mega'>05</td></tr>
+<tr class='pick' data-line="08 36 44 47 64 17QP"><td class='n'>392</td><td>08-36-44-47-64</td><td class='mega'>17</td></tr>
+<tr class='pick' data-line="20 40 46 49 54 04QP"><td class='n'>393</td><td>20-40-46-49-54</td><td class='mega'>04</td></tr>
+<tr class='pick' data-line="15 41 42 51 67 07QP"><td class='n'>394</td><td>15-41-42-51-67</td><td class='mega'>07</td></tr>
+<tr class='pick' data-line="07 20 27 53 60 03QP"><td class='n'>395</td><td>07-20-27-53-60</td><td class='mega'>03</td></tr>
+<tr class='pick' data-line="01 16 36 58 60 06QP"><td class='n'>396</td><td>01-16-36-58-60</td><td class='mega'>06</td></tr>
+<tr class='pick' data-line="32 33 55 62 66 23QP"><td class='n'>397</td><td>32-33-55-62-66</td><td class='mega'>23</td></tr>
+<tr class='pick' data-line="38 44 46 52 55 15QP"><td class='n'>398</td><td>38-44-46-52-55</td><td class='mega'>15</td></tr>
+<tr class='pick' data-line="11 12 43 48 57 21QP"><td class='n'>399</td><td>11-12-43-48-57</td><td class='mega'>21</td></tr>
+<tr class='pick' data-line="15 31 52 55 68 12QP"><td class='n'>400</td><td>15-31-52-55-68</td><td class='mega'>12</td></tr>
+<tr class='pick' data-line="12 33 35 45 48 19QP"><td class='n'>401</td><td>12-33-35-45-48</td><td class='mega'>19</td></tr>
+<tr class='pick' data-line="03 17 23 53 59 19QP"><td class='n'>402</td><td>03-17-23-53-59</td><td class='mega'>19</td></tr>
+<tr class='pick' data-line="02 08 36 58 69 01QP"><td class='n'>403</td><td>02-08-36-58-69</td><td class='mega'>01</td></tr>
+<tr class='pick' data-line="05 22 26 61 65 05QP"><td class='n'>404</td><td>05-22-26-61-65</td><td class='mega'>05</td></tr>
+<tr class='pick' data-line="06 28 31 42 62 12QP"><td class='n'>405</td><td>06-28-31-42-62</td><td class='mega'>12</td></tr>
+<tr class='pick' data-line="07 18 27 59 69 18QP"><td class='n'>406</td><td>07-18-27-59-69</td><td class='mega'>18</td></tr>
+<tr class='pick' data-line="03 09 27 46 68 17QP"><td class='n'>407</td><td>03-09-27-46-68</td><td class='mega'>17</td></tr>
+<tr class='pick' data-line="03 07 18 29 40 14QP"><td class='n'>408</td><td>03-07-18-29-40</td><td class='mega'>14</td></tr>
+<tr class='pick' data-line="12 19 33 53 64 01QP"><td class='n'>409</td><td>12-19-33-53-64</td><td class='mega'>01</td></tr>
+<tr class='pick' data-line="12 28 48 49 59 03QP"><td class='n'>410</td><td>12-28-48-49-59</td><td class='mega'>03</td></tr>
+<tr class='pick' data-line="05 29 32 39 46 15QP"><td class='n'>411</td><td>05-29-32-39-46</td><td class='mega'>15</td></tr>
+<tr class='pick' data-line="01 04 07 59 66 11QP"><td class='n'>412</td><td>01-04-07-59-66</td><td class='mega'>11</td></tr>
+<tr class='pick' data-line="05 08 34 43 69 14QP"><td class='n'>413</td><td>05-08-34-43-69</td><td class='mega'>14</td></tr>
+<tr class='pick' data-line="01 04 11 25 34 14QP"><td class='n'>414</td><td>01-04-11-25-34</td><td class='mega'>14</td></tr>
+<tr class='pick' data-line="25 26 34 56 68 14QP"><td class='n'>415</td><td>25-26-34-56-68</td><td class='mega'>14</td></tr>
+<tr class='pick' data-line="19 34 43 44 68 21QP"><td class='n'>416</td><td>19-34-43-44-68</td><td class='mega'>21</td></tr>
+<tr class='pick' data-line="15 19 24 33 55 23QP"><td class='n'>417</td><td>15-19-24-33-55</td><td class='mega'>23</td></tr>
+<tr class='pick' data-line="02 03 23 42 67 19QP"><td class='n'>418</td><td>02-03-23-42-67</td><td class='mega'>19</td></tr>
+<tr class='pick' data-line="15 32 44 60 68 13QP"><td class='n'>419</td><td>15-32-44-60-68</td><td class='mega'>13</td></tr>
+<tr class='pick' data-line="10 50 59 65 70 18QP"><td class='n'>420</td><td>10-50-59-65-70</td><td class='mega'>18</td></tr>
+<tr class='pick' data-line="13 18 32 48 61 21QP"><td class='n'>421</td><td>13-18-32-48-61</td><td class='mega'>21</td></tr>
+<tr class='pick' data-line="17 27 30 40 52 19QP"><td class='n'>422</td><td>17-27-30-40-52</td><td class='mega'>19</td></tr>
+<tr class='pick' data-line="05 21 28 31 45 13QP"><td class='n'>423</td><td>05-21-28-31-45</td><td class='mega'>13</td></tr>
+<tr class='pick' data-line="07 10 22 29 64 15QP"><td class='n'>424</td><td>07-10-22-29-64</td><td class='mega'>15</td></tr>
+<tr class='pick' data-line="11 15 17 37 55 01QP"><td class='n'>425</td><td>11-15-17-37-55</td><td class='mega'>01</td></tr>
+<tr class='pick' data-line="08 20 40 43 53 15QP"><td class='n'>426</td><td>08-20-40-43-53</td><td class='mega'>15</td></tr>
+<tr class='pick' data-line="15 36 50 51 59 23QP"><td class='n'>427</td><td>15-36-50-51-59</td><td class='mega'>23</td></tr>
+<tr class='pick' data-line="28 49 55 67 70 22QP"><td class='n'>428</td><td>28-49-55-67-70</td><td class='mega'>22</td></tr>
+<tr class='pick' data-line="09 10 31 47 52 16QP"><td class='n'>429</td><td>09-10-31-47-52</td><td class='mega'>16</td></tr>
+<tr class='pick' data-line="11 15 46 55 67 18QP"><td class='n'>430</td><td>11-15-46-55-67</td><td class='mega'>18</td></tr>
+<tr class='pick' data-line="37 39 40 42 52 13QP"><td class='n'>431</td><td>37-39-40-42-52</td><td class='mega'>13</td></tr>
+<tr class='pick' data-line="05 10 13 28 59 09QP"><td class='n'>432</td><td>05-10-13-28-59</td><td class='mega'>09</td></tr>
+<tr class='pick' data-line="01 02 09 20 52 11QP"><td class='n'>433</td><td>01-02-09-20-52</td><td class='mega'>11</td></tr>
+<tr class='pick' data-line="11 23 26 27 40 11QP"><td class='n'>434</td><td>11-23-26-27-40</td><td class='mega'>11</td></tr>
+<tr class='pick' data-line="09 36 39 41 50 22QP"><td class='n'>435</td><td>09-36-39-41-50</td><td class='mega'>22</td></tr>
+<tr class='pick' data-line="16 39 54 61 66 08QP"><td class='n'>436</td><td>16-39-54-61-66</td><td class='mega'>08</td></tr>
+<tr class='pick' data-line="07 11 17 19 29 02QP"><td class='n'>437</td><td>07-11-17-19-29</td><td class='mega'>02</td></tr>
+<tr class='pick' data-line="09 18 19 41 62 19QP"><td class='n'>438</td><td>09-18-19-41-62</td><td class='mega'>19</td></tr>
+<tr class='pick' data-line="08 12 23 57 64 10QP"><td class='n'>439</td><td>08-12-23-57-64</td><td class='mega'>10</td></tr>
+<tr class='pick' data-line="03 21 43 50 60 13QP"><td class='n'>440</td><td>03-21-43-50-60</td><td class='mega'>13</td></tr>
+<tr class='pick' data-line="01 02 31 34 49 02QP"><td class='n'>441</td><td>01-02-31-34-49</td><td class='mega'>02</td></tr>
+<tr class='pick' data-line="23 32 33 35 60 21QP"><td class='n'>442</td><td>23-32-33-35-60</td><td class='mega'>21</td></tr>
+<tr class='pick' data-line="07 12 16 39 52 19QP"><td class='n'>443</td><td>07-12-16-39-52</td><td class='mega'>19</td></tr>
+<tr class='pick' data-line="03 42 51 56 69 07QP"><td class='n'>444</td><td>03-42-51-56-69</td><td class='mega'>07</td></tr>
+<tr class='pick' data-line="08 25 30 35 56 14QP"><td class='n'>445</td><td>08-25-30-35-56</td><td class='mega'>14</td></tr>
+<tr class='pick' data-line="12 15 16 31 33 12QP"><td class='n'>446</td><td>12-15-16-31-33</td><td class='mega'>12</td></tr>
+<tr class='pick' data-line="13 21 30 31 50 02QP"><td class='n'>447</td><td>13-21-30-31-50</td><td class='mega'>02</td></tr>
+<tr class='pick' data-line="01 08 29 56 69 13QP"><td class='n'>448</td><td>01-08-29-56-69</td><td class='mega'>13</td></tr>
+<tr class='pick' data-line="07 29 50 56 67 04QP"><td class='n'>449</td><td>07-29-50-56-67</td><td class='mega'>04</td></tr>
+<tr class='pick' data-line="24 35 39 44 62 15QP"><td class='n'>450</td><td>24-35-39-44-62</td><td class='mega'>15</td></tr>
+<tr class='pick' data-line="08 32 37 52 63 19QP"><td class='n'>451</td><td>08-32-37-52-63</td><td class='mega'>19</td></tr>
+<tr class='pick' data-line="11 26 29 36 45 13QP"><td class='n'>452</td><td>11-26-29-36-45</td><td class='mega'>13</td></tr>
+<tr class='pick' data-line="01 02 07 34 53 21QP"><td class='n'>453</td><td>01-02-07-34-53</td><td class='mega'>21</td></tr>
+<tr class='pick' data-line="23 34 47 50 60 07QP"><td class='n'>454</td><td>23-34-47-50-60</td><td class='mega'>07</td></tr>
+<tr class='pick' data-line="39 41 52 59 66 15QP"><td class='n'>455</td><td>39-41-52-59-66</td><td class='mega'>15</td></tr>
+<tr class='pick' data-line="12 22 41 45 57 22QP"><td class='n'>456</td><td>12-22-41-45-57</td><td class='mega'>22</td></tr>
+<tr class='pick' data-line="04 30 42 50 64 04QP"><td class='n'>457</td><td>04-30-42-50-64</td><td class='mega'>04</td></tr>
+<tr class='pick' data-line="13 32 34 58 63 03QP"><td class='n'>458</td><td>13-32-34-58-63</td><td class='mega'>03</td></tr>
+<tr class='pick' data-line="09 43 46 47 62 19QP"><td class='n'>459</td><td>09-43-46-47-62</td><td class='mega'>19</td></tr>
+<tr class='pick' data-line="04 26 29 44 66 03QP"><td class='n'>460</td><td>04-26-29-44-66</td><td class='mega'>03</td></tr>
+<tr class='pick' data-line="13 47 50 67 69 09QP"><td class='n'>461</td><td>13-47-50-67-69</td><td class='mega'>09</td></tr>
+<tr class='pick' data-line="15 32 47 58 60 18QP"><td class='n'>462</td><td>15-32-47-58-60</td><td class='mega'>18</td></tr>
+<tr class='pick' data-line="27 38 46 52 63 23QP"><td class='n'>463</td><td>27-38-46-52-63</td><td class='mega'>23</td></tr>
+<tr class='pick' data-line="18 30 48 54 67 10QP"><td class='n'>464</td><td>18-30-48-54-67</td><td class='mega'>10</td></tr>
+<tr class='pick' data-line="02 09 41 48 54 05QP"><td class='n'>465</td><td>02-09-41-48-54</td><td class='mega'>05</td></tr>
+<tr class='pick' data-line="11 22 38 50 58 18QP"><td class='n'>466</td><td>11-22-38-50-58</td><td class='mega'>18</td></tr>
+<tr class='pick' data-line="09 42 51 66 67 18QP"><td class='n'>467</td><td>09-42-51-66-67</td><td class='mega'>18</td></tr>
+<tr class='pick' data-line="18 41 44 54 57 18QP"><td class='n'>468</td><td>18-41-44-54-57</td><td class='mega'>18</td></tr>
+<tr class='pick' data-line="20 25 43 55 58 18QP"><td class='n'>469</td><td>20-25-43-55-58</td><td class='mega'>18</td></tr>
+<tr class='pick' data-line="15 34 44 47 63 11QP"><td class='n'>470</td><td>15-34-44-47-63</td><td class='mega'>11</td></tr>
+<tr class='pick' data-line="05 28 38 42 68 18QP"><td class='n'>471</td><td>05-28-38-42-68</td><td class='mega'>18</td></tr>
+<tr class='pick' data-line="01 07 32 34 43 12QP"><td class='n'>472</td><td>01-07-32-34-43</td><td class='mega'>12</td></tr>
+<tr class='pick' data-line="16 23 24 43 56 12QP"><td class='n'>473</td><td>16-23-24-43-56</td><td class='mega'>12</td></tr>
+<tr class='pick' data-line="16 17 21 28 36 19QP"><td class='n'>474</td><td>16-17-21-28-36</td><td class='mega'>19</td></tr>
+<tr class='pick' data-line="14 25 29 47 59 04QP"><td class='n'>475</td><td>14-25-29-47-59</td><td class='mega'>04</td></tr>
+<tr class='pick' data-line="10 19 47 50 66 11QP"><td class='n'>476</td><td>10-19-47-50-66</td><td class='mega'>11</td></tr>
+<tr class='pick' data-line="20 21 34 50 68 10QP"><td class='n'>477</td><td>20-21-34-50-68</td><td class='mega'>10</td></tr>
+<tr class='pick' data-line="17 29 56 59 65 17QP"><td class='n'>478</td><td>17-29-56-59-65</td><td class='mega'>17</td></tr>
+<tr class='pick' data-line="01 31 36 65 67 23QP"><td class='n'>479</td><td>01-31-36-65-67</td><td class='mega'>23</td></tr>
+<tr class='pick' data-line="27 32 59 66 69 03QP"><td class='n'>480</td><td>27-32-59-66-69</td><td class='mega'>03</td></tr>
+<tr class='pick' data-line="16 22 27 43 68 11QP"><td class='n'>481</td><td>16-22-27-43-68</td><td class='mega'>11</td></tr>
+<tr class='pick' data-line="04 12 27 49 56 11QP"><td class='n'>482</td><td>04-12-27-49-56</td><td class='mega'>11</td></tr>
+<tr class='pick' data-line="06 21 26 51 66 17QP"><td class='n'>483</td><td>06-21-26-51-66</td><td class='mega'>17</td></tr>
+<tr class='pick' data-line="02 20 26 27 66 19QP"><td class='n'>484</td><td>02-20-26-27-66</td><td class='mega'>19</td></tr>
+<tr class='pick' data-line="13 18 19 48 55 18QP"><td class='n'>485</td><td>13-18-19-48-55</td><td class='mega'>18</td></tr>
+<tr class='pick' data-line="01 06 17 18 33 19QP"><td class='n'>486</td><td>01-06-17-18-33</td><td class='mega'>19</td></tr>
+<tr class='pick' data-line="05 09 32 65 66 07QP"><td class='n'>487</td><td>05-09-32-65-66</td><td class='mega'>07</td></tr>
+<tr class='pick' data-line="05 54 60 64 67 02QP"><td class='n'>488</td><td>05-54-60-64-67</td><td class='mega'>02</td></tr>
+<tr class='pick' data-line="22 33 46 52 60 16QP"><td class='n'>489</td><td>22-33-46-52-60</td><td class='mega'>16</td></tr>
+<tr class='pick' data-line="01 32 59 65 69 24QP"><td class='n'>490</td><td>01-32-59-65-69</td><td class='mega'>24</td></tr>
+<tr class='pick' data-line="26 37 48 58 60 17QP"><td class='n'>491</td><td>26-37-48-58-60</td><td class='mega'>17</td></tr>
+<tr class='pick' data-line="05 06 14 66 68 23QP"><td class='n'>492</td><td>05-06-14-66-68</td><td class='mega'>23</td></tr>
+<tr class='pick' data-line="02 27 28 52 67 05QP"><td class='n'>493</td><td>02-27-28-52-67</td><td class='mega'>05</td></tr>
+<tr class='pick' data-line="13 22 40 43 49 15QP"><td class='n'>494</td><td>13-22-40-43-49</td><td class='mega'>15</td></tr>
+<tr class='pick' data-line="31 37 45 46 56 03QP"><td class='n'>495</td><td>31-37-45-46-56</td><td class='mega'>03</td></tr>
+<tr class='pick' data-line="17 28 42 58 70 06QP"><td class='n'>496</td><td>17-28-42-58-70</td><td class='mega'>06</td></tr>
+<tr class='pick' data-line="04 07 08 15 41 03QP"><td class='n'>497</td><td>04-07-08-15-41</td><td class='mega'>03</td></tr>
+<tr class='pick' data-line="20 37 38 44 55 20QP"><td class='n'>498</td><td>20-37-38-44-55</td><td class='mega'>20</td></tr>
+<tr class='pick' data-line="01 03 19 56 67 09QP"><td class='n'>499</td><td>01-03-19-56-67</td><td class='mega'>09</td></tr>
+<tr class='pick' data-line="16 17 36 38 51 13QP"><td class='n'>500</td><td>16-17-36-38-51</td><td class='mega'>13</td></tr>
+</tbody>
+</table>
+</div>
+</main>
+<div class="modal" id="ticket-modal" hidden>
+  <button class="x" type="button" aria-label="Close">×</button>
+  <div class="slip">
+    <img src="/assets/ticket.jpg" alt="Mega Millions ticket"/>
+    <div class="nums" id="ticket-nums"></div>
+  </div>
+</div>
+<script>
+const modal = document.getElementById('ticket-modal');
+const nums = document.getElementById('ticket-nums');
+function closeTicket(){ modal.classList.remove('open'); modal.hidden = true; }
+document.querySelectorAll('tr.pick').forEach((row) => {
+  row.addEventListener('click', () => {
+    const parts = row.dataset.line.trim().split(/\s+/);
+    nums.innerHTML = parts.map((p,i) => `<span class="${i===parts.length-1?'qp':''}">${p}</span>`).join('');
+    modal.hidden = false;
+    modal.classList.add('open');
+  });
+});
+modal.addEventListener('click', (e) => { if (e.target === modal || e.target.classList.contains('x')) closeTicket(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeTicket(); });
+function etParts(date) {
+  const map = {};
+  for (const part of new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/New_York',
+    weekday: 'short',
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    hourCycle: 'h23'
+  }).formatToParts(date)) {
+    map[part.type] = part.value;
+  }
+  return map;
+}
+function nextMegaMillionsDraw(from) {
+  let t = new Date(from.getTime());
+  for (let i = 0; i < 24 * 10; i++) {
+    const p = etParts(t);
+    const drawDay = p.weekday === 'Tue' || p.weekday === 'Fri';
+    const hour = Number(p.hour);
+    if (drawDay && hour < 23) {
+      const labelDate = new Date(Date.UTC(Number(p.year), Number(p.month) - 1, Number(p.day), 16, 0, 0));
+      const pretty = new Intl.DateTimeFormat('en-US', {
+        weekday: 'long',
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
+        timeZone: 'UTC'
+      }).format(labelDate);
+      return pretty + ' at 11:00 p.m. ET';
+    }
+    t = new Date(t.getTime() + 60 * 60 * 1000);
+  }
+  return 'the next official Tuesday or Friday drawing';
+}
+const drawEl = document.getElementById('draw-date');
+if (drawEl) drawEl.textContent = nextMegaMillionsDraw(new Date());
+const pageEmail = document.getElementById('page-email');
+const boards = document.getElementById('boards');
+const params = new URLSearchParams(location.search);
+let incoming = params.get('email') || '';
+try { incoming = incoming || sessionStorage.getItem('mega-hub-email') || ''; } catch (e) {}
+if (incoming && pageEmail) pageEmail.value = incoming;
+document.getElementById('reveal-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const value = (pageEmail.value || '').trim();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+    pageEmail.focus();
+    return;
+  }
+  try { sessionStorage.setItem('mega-hub-email', value); } catch (e2) {}
+  boards.classList.add('show');
+  boards.scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Mega Hub · Your boards</title>
+<style>
+:root{--cream:#F4EFE6;--ink:#1C1915;--sage:#3D5348;--muted:#6B655C;--line:#E3D9C8}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--cream);color:var(--ink);font-family:Georgia,serif}
+.wrap{max-width:920px;margin:0 auto;padding:32px 20px 64px}
+.kicker{letter-spacing:.16em;text-transform:uppercase;font-size:11px;color:var(--sage);margin:0 0 8px}
+h1{font-size:28px;margin:0 0 8px}
+.meta{color:var(--muted);margin:0 0 20px;line-height:1.5}
+.bar{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 22px}
+a.btn{display:inline-block;background:var(--ink);color:var(--cream);text-decoration:none;padding:10px 14px;font-size:14px}
+a.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--ink)}
+.note{font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px;margin-top:8px}
+table{width:100%;border-collapse:collapse;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px}
+th{text-align:left;font-size:11px;letter-spacing:.08em;color:var(--muted);padding:6px 8px;border-bottom:1px solid var(--line)}
+td{padding:5px 8px;border-bottom:1px solid #efe6d8}
+td.n{width:54px;color:var(--muted)}
+td.mega{width:52px;font-weight:700}
+tr.pick{cursor:pointer}
+tr.pick:hover{background:#efe6d8}
+.home-card{border:1px solid var(--line);padding:18px;margin:18px 0 0;max-width:520px}
+.modal{display:none;position:fixed;inset:0;background:rgba(28,25,21,.72);z-index:40;padding:16px;overflow:auto}
+.modal.open{display:flex;align-items:center;justify-content:center}
+.slip{position:relative;width:min(420px,94vw);background:#fff;box-shadow:0 16px 50px rgba(0,0,0,.28)}
+.slip img{display:block;width:100%;height:auto}
+.slip .nums{position:absolute;left:9%;right:9%;top:47.2%;height:8.6%;display:flex;align-items:center;justify-content:space-between;font-family:Arial,Helvetica,sans-serif;font-weight:800;color:#111;letter-spacing:.02em}
+.slip .nums span{font-size:clamp(18px,6.4vw,28px)}
+.slip .nums .qp{letter-spacing:0}
+.modal .x{position:absolute;top:10px;right:14px;border:0;background:transparent;color:#fff;font-size:28px;cursor:pointer}
+.notice{background:#fff;border:1px solid var(--line);padding:18px 18px 16px;margin:0 0 22px}
+.notice .who{margin:0 0 10px;font-size:18px}
+.notice .draw{margin:0 0 10px;font-size:16px}
+.notice .draw strong{font-weight:700}
+.notice .keep{margin:0;color:var(--muted);font-size:14px;line-height:1.55}
+.thanks{max-width:520px}
+.field{margin:18px 0 12px}
+.field label{display:block;font-size:13px;margin:0 0 6px;color:var(--muted)}
+.field input{width:100%;padding:12px 12px;font-size:16px;border:1px solid var(--line);background:#fff;color:var(--ink);font-family:Georgia,serif}
+.field input:focus{outline:2px solid var(--sage);border-color:var(--sage)}
+button.go{display:inline-block;background:var(--ink);color:var(--cream);border:0;padding:12px 16px;font-size:15px;cursor:pointer;font-family:Georgia,serif}
+.err{display:none;color:#8a2b2b;font-size:13px;margin:0 0 12px}
+.err.show{display:block}
+.logo{display:block;width:min(280px,70vw);height:auto;margin:0 0 18px}
+.thanks-card{background:#fff;border:1px solid var(--line);padding:28px 24px 26px;max-width:460px}
+.emailbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;background:#fff;border:1px solid var(--line);padding:10px;margin:0 0 18px}
+.emailbar input{flex:1;min-width:180px;padding:10px 12px;font-size:15px;border:1px solid var(--line);background:var(--cream);color:var(--ink);font-family:Georgia,serif}
+.emailbar button{background:var(--ink);color:var(--cream);border:0;padding:10px 14px;font-size:14px;cursor:pointer;font-family:Georgia,serif}
+.boards{display:none}
+.boards.show{display:block}
+</style>
+</head>
+<body>
+<main class="wrap">
+<p class="kicker">Mega Hub</p>
+<h1>Your boards are on your pack page</h1>
+<p class="meta">After payment you are sent to the page for the pack you bought. That page has the shared list and the PDF.</p>
+<div class="home-card">
+<p class="meta" style="margin:0">If you landed here by hand, use the link from your receipt. We do not publish the pack URLs on this home page.</p>
+</div>
+</main>
+</body>
+</html>
