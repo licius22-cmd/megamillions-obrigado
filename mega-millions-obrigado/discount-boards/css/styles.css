@@ -1,0 +1,169 @@
+@font-face {
+  font-family: "Archivo";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("../fonts/archivo.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Archivo Black";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/archivo-black.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Newsreader";
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url("../fonts/newsreader.woff2") format("woff2");
+}
+:root {
+  --cream: #f4efe6;
+  --card: #fffcf7;
+  --ink: #1c1915;
+  --muted: #6b655c;
+  --line: #e3d9c8;
+  --win: #1f6b4a;
+  --banner: #c4161c;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; }
+body {
+  min-height: 100dvh;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: Archivo, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 32rem; margin: 0 auto; padding: 2.5rem 1rem 3rem; }
+.card {
+  border: 1px solid var(--line);
+  background: var(--card);
+  padding: 2rem 1.5rem 2.5rem;
+  box-shadow: 0 18px 50px rgba(28,25,21,.08);
+}
+@media (min-width: 640px) { .card { padding: 2.5rem 2.25rem; } }
+.logo { display: block; height: 4rem; width: auto; margin: 0 auto 1.5rem; }
+.warn {
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--banner);
+  margin: 0;
+}
+.dies {
+  margin: .75rem 0 0;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--banner);
+}
+h1 {
+  margin: .5rem 0 0;
+  text-align: center;
+  font-family: Newsreader, Georgia, serif;
+  font-size: clamp(20px, 5vw, 36px);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -.01em;
+}
+h1 span { display: block; }
+.price-line {
+  margin: .75rem 0 0;
+  text-align: center;
+  font-family: Newsreader, Georgia, serif;
+  font-size: 1.125rem;
+  line-height: 1.35;
+  color: var(--muted);
+}
+.closes {
+  margin-top: 1rem;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--cream);
+  padding: .75rem 1rem;
+  text-align: center;
+}
+.closes small {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: rgba(244,239,230,.7);
+}
+.closes .t {
+  display: block;
+  margin-top: .25rem;
+  font-family: Newsreader, Georgia, serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.grid { margin-top: 1.75rem; display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+.box { border: 1px solid var(--line); padding: 1rem; }
+.box.dark { border-color: var(--ink); background: var(--ink); color: var(--cream); }
+.box .k {
+  margin: 0;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.box.dark .k { color: rgba(244,239,230,.7); }
+.box .n {
+  margin: .25rem 0 0;
+  font-family: Newsreader, Georgia, serif;
+  font-size: 1.875rem;
+  font-weight: 600;
+}
+.box .s { margin: 0; font-size: 14px; color: var(--muted); }
+.box.dark .s { color: rgba(244,239,230,.8); }
+.gone { margin: 1rem 0 0; font-size: 14px; font-weight: 600; }
+.cta {
+  display: block;
+  width: 100%;
+  min-height: 3rem;
+  margin-top: 1.75rem;
+  border: 0;
+  background: var(--win);
+  color: #fff;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.cta:disabled { opacity: .7; cursor: wait; }
+.skip {
+  display: block;
+  margin-top: .75rem;
+  min-height: 2.75rem;
+  padding: .5rem;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--muted);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.foot {
+  margin: 1.25rem auto 0;
+  max-width: 28rem;
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+.dir { max-width: 36rem; margin: 0 auto; padding: 2.5rem 1.25rem 3rem; }
+.dir h1 { text-align: left; font-size: 28px; }
+.dir p { color: var(--muted); line-height: 1.5; }
+.dir a { color: var(--ink); }
+.dir table { width: 100%; border-collapse: collapse; margin-top: 1.25rem; font-size: 14px; }
+.dir th, .dir td { border-bottom: 1px solid var(--line); padding: .7rem .4rem; text-align: left; }
+.dir code { font-size: 12px; }
